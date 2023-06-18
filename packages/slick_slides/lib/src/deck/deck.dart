@@ -35,6 +35,7 @@ class SlideDeck extends StatefulWidget {
 
 class SlideDeckState extends State<SlideDeck> {
   int _index = 0;
+  final _navigatorKey = GlobalKey<NavigatorState>();
 
   final _focusNode = FocusNode();
   Timer? _controlsTimer;
@@ -54,14 +55,21 @@ class SlideDeckState extends State<SlideDeck> {
   }
 
   void _onChangeSlide(int delta) {
-    setState(() {
-      _index += delta;
-      if (_index >= widget.slides.length) {
-        _index = widget.slides.length - 1;
-      } else if (_index < 0) {
-        _index = 0;
-      }
-    });
+    var newIndex = _index + delta;
+    if (newIndex >= widget.slides.length) {
+      newIndex = widget.slides.length - 1;
+    } else if (newIndex < 0) {
+      newIndex = 0;
+    }
+    if (_index != newIndex) {
+      setState(() {
+        _index = newIndex;
+        _navigatorKey.currentState?.pushReplacementNamed(
+          '$_index',
+        );
+      });
+      _index = newIndex;
+    }
   }
 
   void _onMouseMoved() {
@@ -91,8 +99,6 @@ class SlideDeckState extends State<SlideDeck> {
     if (_index >= widget.slides.length) {
       _index = widget.slides.length - 1;
     }
-
-    var slide = widget.slides[_index].builder(context);
 
     return Focus(
       focusNode: _focusNode,
@@ -124,7 +130,17 @@ class SlideDeckState extends State<SlideDeck> {
                       height: widget.size.height,
                       child: SlideTheme(
                         data: widget.theme,
-                        child: slide,
+                        child: Navigator(
+                          key: _navigatorKey,
+                          initialRoute: '0',
+                          onGenerateRoute: (settings) {
+                            var index = int.tryParse(settings.name ?? '0') ?? 0;
+                            var slide = widget.slides[index];
+                            return MaterialPageRoute(
+                              builder: (context) => slide.builder(context),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
