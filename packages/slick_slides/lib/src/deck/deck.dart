@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:slick_slides/slick_slides.dart';
 import 'package:slick_slides/src/deck/deck_controls.dart';
-import 'package:slick_slides/src/theme.dart';
 
 typedef SlideBuilder = Widget Function(BuildContext context);
 
@@ -11,10 +11,12 @@ class Slide {
   const Slide({
     required this.builder,
     this.name,
+    this.transition,
   });
 
   final SlideBuilder builder;
   final String? name;
+  final SlickTransition? transition;
 }
 
 class SlideDeck extends StatefulWidget {
@@ -66,6 +68,7 @@ class SlideDeckState extends State<SlideDeck> {
         _index = newIndex;
         _navigatorKey.currentState?.pushReplacementNamed(
           '$_index',
+          arguments: delta > 0,
         );
       });
       _index = newIndex;
@@ -133,13 +136,7 @@ class SlideDeckState extends State<SlideDeck> {
                         child: Navigator(
                           key: _navigatorKey,
                           initialRoute: '0',
-                          onGenerateRoute: (settings) {
-                            var index = int.tryParse(settings.name ?? '0') ?? 0;
-                            var slide = widget.slides[index];
-                            return MaterialPageRoute(
-                              builder: (context) => slide.builder(context),
-                            );
-                          },
+                          onGenerateRoute: _generateRoute,
                         ),
                       ),
                     ),
@@ -176,5 +173,19 @@ class SlideDeckState extends State<SlideDeck> {
         ),
       ),
     );
+  }
+
+  Route _generateRoute(RouteSettings settings) {
+    var index = int.tryParse(settings.name ?? '0') ?? 0;
+    var slide = widget.slides[index];
+    var transition = slide.transition;
+    var animate = settings.arguments as bool? ?? true;
+
+    if (transition == null || !animate) {
+      return PageRouteBuilder(
+          pageBuilder: (context, _, __) => slide.builder(context));
+    } else {
+      return transition.buildPageRoute(slide.builder);
+    }
   }
 }

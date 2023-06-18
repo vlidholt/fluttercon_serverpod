@@ -63,6 +63,7 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         Slide(
+          transition: const FadeSlickTransition(),
           builder: (context) => ContentSlide(
             title: const Text('Slide 2\nHello'),
             subtitle: const Text('Serverpod is awesome!\n2nd line'),
@@ -79,6 +80,7 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         Slide(
+          transition: const FadeThroughColorSlickTransition(),
           builder: (context) => ContentSlide(
             title: const Text('Third slide'),
             subtitle: const Text('Serverpod is awesome!'),
