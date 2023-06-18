@@ -187,8 +187,9 @@ class _ColoredCodeState extends State<ColoredCode>
     // Animate insertions and deletions.
     int operationCount = 0;
     int diffIdx = 0;
-    int insertIdx = 0;
+    int characterIdx = 0;
     var animatedCode = '';
+    bool containsNewline = false;
     while (operationCount < frame) {
       var diff = _diff![diffIdx];
 
@@ -202,15 +203,23 @@ class _ColoredCodeState extends State<ColoredCode>
         operationCount += 1;
       } else {
         // Insert.
-        animatedCode += diff.text.substring(insertIdx, insertIdx + 1);
+        animatedCode += diff.text.substring(characterIdx, characterIdx + 1);
+        if (diff.text.contains('\n')) {
+          containsNewline = true;
+        }
 
-        insertIdx += 1;
+        characterIdx += 1;
         operationCount += 1;
-        if (insertIdx == diff.text.length) {
+        if (characterIdx == diff.text.length) {
           diffIdx += 1;
-          insertIdx = 0;
+          characterIdx = 0;
+          containsNewline = false;
         }
       }
+    }
+
+    if (containsNewline) {
+      animatedCode += '\n';
     }
 
     // Add remaining old code.

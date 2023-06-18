@@ -11,19 +11,14 @@ const _codeA = '''class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(),
-      debugShowCheckedModeBanner: false,
+    
     );
   }
 }''';
 
-const _codeB = '''class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+const _codeB = '''// Adding a long comment on the first line
+class MyApp extends StatelessWidget {
+  const ServerpodApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +127,7 @@ class MyHomePage extends StatelessWidget {
               child: ColoredCode(
                 code: _codeB,
                 animateHighlightedLines: true,
-                highlightedLines: [7, 8, 9, 10],
+                highlightedLines: [8, 9, 10, 11],
               ),
             ),
             background: Container(color: Colors.blueGrey[900]),
@@ -146,7 +141,7 @@ class MyHomePage extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: ColoredCode(
                 code: _codeB,
-                highlightedLines: [11],
+                highlightedLines: [12],
               ),
             ),
             background: Container(color: Colors.blueGrey[900]),
