@@ -42,6 +42,8 @@ class SlideDeckState extends State<SlideDeck> {
   bool _mouseMovedRecently = false;
   bool _mouseInsideControls = false;
 
+  final _heroController = MaterialApp.createMaterialHeroController();
+
   @override
   void initState() {
     super.initState();
@@ -131,10 +133,13 @@ class SlideDeckState extends State<SlideDeck> {
                       height: widget.size.height,
                       child: SlideTheme(
                         data: widget.theme,
-                        child: Navigator(
-                          key: _navigatorKey,
-                          initialRoute: '0',
-                          onGenerateRoute: _generateRoute,
+                        child: HeroControllerScope(
+                          controller: _heroController,
+                          child: Navigator(
+                            key: _navigatorKey,
+                            initialRoute: '0',
+                            onGenerateRoute: _generateRoute,
+                          ),
                         ),
                       ),
                     ),
