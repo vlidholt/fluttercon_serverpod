@@ -80,8 +80,8 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         Slide(
-          transition: const SlickFadeThroughColorTransition(
-            duration: Duration(seconds: 2),
+          transition: const SlickFadeTransition(
+            color: Colors.blueGrey,
           ),
           builder: (context) => ContentSlide(
             title: const Text('Third slide'),
@@ -112,7 +112,7 @@ class MyHomePage extends StatelessWidget {
         ),
         Slide(
           transition: const SlickFadeTransition(
-            duration: Duration(seconds: 2),
+            duration: Duration(seconds: 1),
           ),
           builder: (context) => ContentSlide(
             title: const Text('Slide 2 with Hero'),
@@ -122,7 +122,7 @@ class MyHomePage extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Hero(
                 tag: 'hero',
-                child: FlutterLogo(size: 200),
+                child: FlutterLogo(size: 400),
               ),
             ),
           ),
