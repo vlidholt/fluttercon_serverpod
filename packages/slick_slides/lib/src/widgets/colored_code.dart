@@ -9,8 +9,10 @@ class ColoredCode extends StatefulWidget {
     required this.code,
     this.animateFromCode,
     this.language = 'dart',
+    this.tabSize = 2,
     this.codeTheme = draculaTheme,
     this.textStyle,
+    this.highlightedLines = const [],
     this.maxAnimationDuration = const Duration(milliseconds: 2000),
     this.keystrokeDuration = const Duration(milliseconds: 50),
     super.key,
@@ -19,10 +21,12 @@ class ColoredCode extends StatefulWidget {
   final String code;
   final String? animateFromCode;
   final String language;
+  final int tabSize;
   final Map<String, TextStyle> codeTheme;
   final TextStyle? textStyle;
   final Duration maxAnimationDuration;
   final Duration keystrokeDuration;
+  final List<int> highlightedLines;
 
   @override
   State<ColoredCode> createState() => _ColoredCodeState();
@@ -94,11 +98,51 @@ class _ColoredCodeState extends State<ColoredCode>
       animatedCode = widget.code;
     }
 
-    return HighlightView(
+    var coloredCode = HighlightView(
       animatedCode,
       language: widget.language,
       theme: codeThemeCopy,
       textStyle: widget.textStyle ?? theme.textTheme.code,
+      tabSize: widget.tabSize,
+    );
+
+    if (widget.highlightedLines.isEmpty) {
+      return coloredCode;
+    }
+
+    var codeLines = animatedCode.split('\n');
+    var numLines = codeLines.length;
+
+    var fadedColoredCode = HighlightView(
+      animatedCode,
+      language: widget.language,
+      theme: codeThemeCopy,
+      textStyle: widget.textStyle ?? theme.textTheme.code,
+      tabSize: widget.tabSize,
+    );
+
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: _HighlightedLinesClipper(
+            numLines: numLines,
+            highlightedLines: widget.highlightedLines,
+            invert: false,
+          ),
+          child: coloredCode,
+        ),
+        Opacity(
+          opacity: 0.2,
+          child: ClipPath(
+            clipper: _HighlightedLinesClipper(
+              numLines: numLines,
+              highlightedLines: widget.highlightedLines,
+              invert: true,
+            ),
+            child: fadedColoredCode,
+          ),
+        ),
+      ],
     );
   }
 
@@ -148,5 +192,37 @@ class _ColoredCodeState extends State<ColoredCode>
     }
 
     return animatedCode;
+  }
+}
+
+class _HighlightedLinesClipper extends CustomClipper<Path> {
+  _HighlightedLinesClipper({
+    required this.numLines,
+    required this.highlightedLines,
+    required this.invert,
+  });
+
+  final int numLines;
+  final List<int> highlightedLines;
+  final bool invert;
+
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    var lineHeight = size.height / numLines;
+    for (var i = 0; i < numLines; i++) {
+      if (highlightedLines.contains(i) != invert) {
+        var y = i * lineHeight;
+        path.addRect(
+          Rect.fromLTWH(0.0, y, size.width, lineHeight),
+        );
+      }
+    }
+    return path;
+  }
+
+  @override
+  bool shouldReclip(_HighlightedLinesClipper oldClipper) {
+    return oldClipper.highlightedLines != highlightedLines;
   }
 }

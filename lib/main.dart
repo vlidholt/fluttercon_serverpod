@@ -104,6 +104,7 @@ class MyHomePage extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: ColoredCode(
                 code: _codeA,
+                highlightedLines: [0, 1, 5, 6, 9],
               ),
             ),
             background: Container(color: Colors.blueGrey[900]),
