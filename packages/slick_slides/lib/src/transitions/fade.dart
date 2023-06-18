@@ -3,10 +3,8 @@ import 'package:slick_slides/slick_slides.dart';
 
 class SlickFadeTransition extends SlickTransition {
   const SlickFadeTransition({
-    this.duration = const Duration(milliseconds: 300),
+    super.duration = const Duration(milliseconds: 300),
   });
-
-  final Duration duration;
 
   @override
   PageRoute buildPageRoute(WidgetBuilder slideBuilder) {
@@ -26,7 +24,7 @@ class _FadePageRoute<T> extends PageRoute<T> {
   final Duration duration;
 
   @override
-  Color get barrierColor => Colors.black;
+  Color get barrierColor => Colors.transparent;
 
   @override
   String get barrierLabel => 'barrier';

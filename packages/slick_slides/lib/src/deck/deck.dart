@@ -181,7 +181,9 @@ class SlideDeckState extends State<SlideDeck> {
 
     if (transition == null || !animate) {
       return PageRouteBuilder(
-          pageBuilder: (context, _, __) => slide.builder(context));
+        transitionDuration: Duration.zero,
+        pageBuilder: (context, _, __) => slide.builder(context),
+      );
     } else {
       return transition.buildPageRoute(slide.builder);
     }

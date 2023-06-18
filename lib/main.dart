@@ -80,7 +80,9 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         Slide(
-          transition: const SlickFadeThroughColorTransition(),
+          transition: const SlickFadeThroughColorTransition(
+            duration: Duration(seconds: 2),
+          ),
           builder: (context) => ContentSlide(
             title: const Text('Third slide'),
             subtitle: const Text('Serverpod is awesome!'),
@@ -91,6 +93,38 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             background: Container(color: Colors.blueGrey[900]),
+          ),
+        ),
+        Slide(
+          transition: const SlickFadeTransition(),
+          builder: (context) => ContentSlide(
+            title: const Text('Slide 1 with Hero'),
+            subtitle: const Text('So much fun'),
+            background: Container(color: Colors.white),
+            content: const Align(
+              alignment: Alignment.centerLeft,
+              child: Hero(
+                tag: 'hero',
+                child: FlutterLogo(size: 200),
+              ),
+            ),
+          ),
+        ),
+        Slide(
+          transition: const SlickFadeTransition(
+            duration: Duration(seconds: 2),
+          ),
+          builder: (context) => ContentSlide(
+            title: const Text('Slide 2 with Hero'),
+            subtitle: const Text('but is it really?'),
+            background: Container(color: Colors.black),
+            content: const Align(
+              alignment: Alignment.centerRight,
+              child: Hero(
+                tag: 'hero',
+                child: FlutterLogo(size: 200),
+              ),
+            ),
           ),
         ),
       ],

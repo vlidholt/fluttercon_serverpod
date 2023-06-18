@@ -3,11 +3,10 @@ import 'package:slick_slides/slick_slides.dart';
 
 class SlickFadeThroughColorTransition extends SlickTransition {
   const SlickFadeThroughColorTransition({
-    this.duration = const Duration(milliseconds: 500),
+    super.duration = const Duration(milliseconds: 500),
     this.color = Colors.black,
   });
 
-  final Duration duration;
   final Color color;
 
   @override
@@ -31,7 +30,7 @@ class _FadeThroughColorPageRoute<T> extends PageRoute<T> {
   final Color color;
 
   @override
-  Color get barrierColor => Colors.black;
+  Color get barrierColor => Colors.transparent;
 
   @override
   String get barrierLabel => 'barrier';
@@ -90,13 +89,19 @@ class _FadeThroughColorTransitionState extends State<
     if (widget.animation.value == 1.0) {
       return widget.child;
     } else if (widget.animation.value < 0.5) {
+      var opacity = widget.animation.value * 2;
       return Container(
-        color: widget.color.withOpacity(widget.animation.value * 2),
+        color: widget.color.withOpacity(opacity),
       );
     } else {
-      return Opacity(
-        opacity: (widget.animation.value - 0.5) * 2,
-        child: widget.child,
+      var opacity = (1 - widget.animation.value) * 2;
+      return Stack(
+        children: [
+          widget.child,
+          Container(
+            color: widget.color.withOpacity(opacity),
+          )
+        ],
       );
     }
   }
