@@ -11,7 +11,7 @@ class SlickFadeThroughColorTransition extends SlickTransition {
   final Color color;
 
   @override
-  PageRoute buildPageRoute(SlideBuilder slideBuilder) {
+  PageRoute buildPageRoute(WidgetBuilder slideBuilder) {
     return _FadeThroughColorPageRoute(
       builder: slideBuilder,
       duration: duration,
@@ -26,7 +26,7 @@ class _FadeThroughColorPageRoute<T> extends PageRoute<T> {
     required this.duration,
     required this.color,
   });
-  final SlideBuilder builder;
+  final WidgetBuilder builder;
   final Duration duration;
   final Color color;
 

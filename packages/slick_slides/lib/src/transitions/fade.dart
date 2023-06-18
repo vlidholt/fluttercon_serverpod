@@ -9,7 +9,7 @@ class SlickFadeTransition extends SlickTransition {
   final Duration duration;
 
   @override
-  PageRoute buildPageRoute(SlideBuilder slideBuilder) {
+  PageRoute buildPageRoute(WidgetBuilder slideBuilder) {
     return _FadePageRoute(
       builder: slideBuilder,
       duration: duration,
@@ -22,7 +22,7 @@ class _FadePageRoute<T> extends PageRoute<T> {
     required this.builder,
     required this.duration,
   });
-  final SlideBuilder builder;
+  final WidgetBuilder builder;
   final Duration duration;
 
   @override

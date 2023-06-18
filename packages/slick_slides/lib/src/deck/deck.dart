@@ -5,8 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:slick_slides/slick_slides.dart';
 import 'package:slick_slides/src/deck/deck_controls.dart';
 
-typedef SlideBuilder = Widget Function(BuildContext context);
-
 class Slide {
   const Slide({
     required this.builder,
@@ -14,7 +12,7 @@ class Slide {
     this.transition,
   });
 
-  final SlideBuilder builder;
+  final WidgetBuilder builder;
   final String? name;
   final SlickTransition? transition;
 }
