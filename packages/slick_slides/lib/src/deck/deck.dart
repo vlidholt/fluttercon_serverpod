@@ -38,7 +38,8 @@ class SlideDeckState extends State<SlideDeck> {
 
   final _focusNode = FocusNode();
   Timer? _controlsTimer;
-  bool _controlsVisible = false;
+  bool _mouseMovedRecently = false;
+  bool _mouseInsideControls = false;
 
   @override
   void initState() {
@@ -74,13 +75,13 @@ class SlideDeckState extends State<SlideDeck> {
           return;
         }
         setState(() {
-          _controlsVisible = false;
+          _mouseMovedRecently = false;
         });
       },
     );
-    if (!_controlsVisible) {
+    if (!_mouseMovedRecently) {
       setState(() {
-        _controlsVisible = true;
+        _mouseMovedRecently = true;
       });
     }
   }
@@ -130,14 +131,26 @@ class SlideDeckState extends State<SlideDeck> {
                   Positioned(
                     bottom: 16.0,
                     right: 16.0,
-                    child: DeckControls(
-                      visible: _controlsVisible,
-                      onPrevious: () {
-                        _onChangeSlide(-1);
+                    child: MouseRegion(
+                      onEnter: (event) {
+                        setState(() {
+                          _mouseInsideControls = true;
+                        });
                       },
-                      onNext: () {
-                        _onChangeSlide(1);
+                      onExit: (event) {
+                        setState(() {
+                          _mouseInsideControls = false;
+                        });
                       },
+                      child: DeckControls(
+                        visible: _mouseMovedRecently || _mouseInsideControls,
+                        onPrevious: () {
+                          _onChangeSlide(-1);
+                        },
+                        onNext: () {
+                          _onChangeSlide(1);
+                        },
+                      ),
                     ),
                   ),
                 ],
