@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:slick_slides/slick_slides.dart';
 
-class FadeThroughColorSlickTransition extends SlickTransition {
-  const FadeThroughColorSlickTransition({
+class SlickFadeThroughColorTransition extends SlickTransition {
+  const SlickFadeThroughColorTransition({
     this.duration = const Duration(milliseconds: 500),
     this.color = Colors.black,
   });

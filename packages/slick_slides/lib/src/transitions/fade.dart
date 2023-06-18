@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:slick_slides/slick_slides.dart';
 
-class FadeSlickTransition extends SlickTransition {
-  const FadeSlickTransition({
+class SlickFadeTransition extends SlickTransition {
+  const SlickFadeTransition({
     this.duration = const Duration(milliseconds: 300),
   });
 
