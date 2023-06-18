@@ -104,7 +104,6 @@ class MyHomePage extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: ColoredCode(
                 code: _codeA,
-                highlightedLines: [0, 1, 5, 6, 9],
               ),
             ),
             background: Container(color: Colors.blueGrey[900]),
@@ -119,6 +118,35 @@ class MyHomePage extends StatelessWidget {
               child: ColoredCode(
                 animateFromCode: _codeA,
                 code: _codeB,
+              ),
+            ),
+            background: Container(color: Colors.blueGrey[900]),
+          ),
+        ),
+        Slide(
+          builder: (context) => ContentSlide(
+            title: const Text('Code slide'),
+            subtitle: const Text('Serverpod is awesome!'),
+            content: const Align(
+              alignment: Alignment.centerLeft,
+              child: ColoredCode(
+                code: _codeB,
+                animateHighlightedLines: true,
+                highlightedLines: [7, 8, 9, 10],
+              ),
+            ),
+            background: Container(color: Colors.blueGrey[900]),
+          ),
+        ),
+        Slide(
+          builder: (context) => ContentSlide(
+            title: const Text('Code slide'),
+            subtitle: const Text('Serverpod is awesome!'),
+            content: const Align(
+              alignment: Alignment.centerLeft,
+              child: ColoredCode(
+                code: _codeB,
+                highlightedLines: [11],
               ),
             ),
             background: Container(color: Colors.blueGrey[900]),

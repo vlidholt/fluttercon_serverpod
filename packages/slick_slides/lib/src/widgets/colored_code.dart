@@ -4,6 +4,9 @@ import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/dracula.dart';
 import 'package:slick_slides/slick_slides.dart';
 
+const _dimmedCodeOpacity = 0.2;
+const _dimCodeDuration = Duration(milliseconds: 500);
+
 class ColoredCode extends StatefulWidget {
   const ColoredCode({
     required this.code,
@@ -15,6 +18,7 @@ class ColoredCode extends StatefulWidget {
     this.highlightedLines = const [],
     this.maxAnimationDuration = const Duration(milliseconds: 2000),
     this.keystrokeDuration = const Duration(milliseconds: 50),
+    this.animateHighlightedLines = false,
     super.key,
   });
 
@@ -27,14 +31,16 @@ class ColoredCode extends StatefulWidget {
   final Duration maxAnimationDuration;
   final Duration keystrokeDuration;
   final List<int> highlightedLines;
+  final bool animateHighlightedLines;
 
   @override
   State<ColoredCode> createState() => _ColoredCodeState();
 }
 
 class _ColoredCodeState extends State<ColoredCode>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _typingController;
+  late AnimationController _highlightController;
   int _numOperations = 0;
   List<Diff>? _diff;
 
@@ -46,6 +52,24 @@ class _ColoredCodeState extends State<ColoredCode>
       value: 0.0,
     );
     _typingController.addListener(() {
+      setState(() {});
+      if (_typingController.isCompleted &&
+          widget.animateHighlightedLines &&
+          widget.highlightedLines.isNotEmpty) {
+        // Start animating the highlighted lines after the typing animation
+        // completes.
+        _highlightController.animateTo(
+          0.1,
+          duration: const Duration(milliseconds: 500),
+        );
+      }
+    });
+
+    _highlightController = AnimationController(
+      vsync: this,
+      value: 1.0,
+    );
+    _highlightController.addListener(() {
       setState(() {});
     });
 
@@ -69,13 +93,24 @@ class _ColoredCodeState extends State<ColoredCode>
         1.0,
         duration: duration,
       );
+    } else if (widget.highlightedLines.isNotEmpty &&
+        widget.animateHighlightedLines) {
+      // Start animating the highlighted lines immediately.
+      _highlightController.value = 1.0;
+      _highlightController.animateTo(
+        _dimmedCodeOpacity,
+        duration: _dimCodeDuration,
+      );
+    } else {
+      _highlightController.value = _dimmedCodeOpacity;
     }
   }
 
   @override
   void dispose() {
-    super.dispose();
     _typingController.dispose();
+    _highlightController.dispose();
+    super.dispose();
   }
 
   @override
@@ -132,7 +167,7 @@ class _ColoredCodeState extends State<ColoredCode>
           child: coloredCode,
         ),
         Opacity(
-          opacity: 0.2,
+          opacity: _highlightController.value,
           child: ClipPath(
             clipper: _HighlightedLinesClipper(
               numLines: numLines,
