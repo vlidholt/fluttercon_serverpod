@@ -11,8 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_highlight: ^0.7.0
   auto_size_text: ^3.0.0
+  diff_match_patch: ^0.4.1
+  flutter_highlight: ^0.7.0
 
 dev_dependencies:
   flutter_test:

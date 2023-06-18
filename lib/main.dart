@@ -6,8 +6,23 @@ void main() {
   runApp(const MyApp());
 }
 
-const _code = '''
-class MyApp extends StatelessWidget {
+const _codeA = '''class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'My App',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}''';
+
+const _codeB = '''class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
@@ -15,11 +30,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Serverpod Presentation',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
-      debugShowCheckedModeBanner: false,
+      home: const FantasticApp(),
     );
   }
 }''';
@@ -81,15 +95,29 @@ class MyHomePage extends StatelessWidget {
         ),
         Slide(
           transition: const SlickFadeTransition(
-            color: Colors.blueGrey,
+            color: Colors.black,
           ),
           builder: (context) => ContentSlide(
-            title: const Text('Third slide'),
+            title: const Text('Code slide'),
             subtitle: const Text('Serverpod is awesome!'),
             content: const Align(
               alignment: Alignment.centerLeft,
               child: ColoredCode(
-                code: _code,
+                code: _codeA,
+              ),
+            ),
+            background: Container(color: Colors.blueGrey[900]),
+          ),
+        ),
+        Slide(
+          builder: (context) => ContentSlide(
+            title: const Text('Code slide'),
+            subtitle: const Text('Serverpod is awesome!'),
+            content: const Align(
+              alignment: Alignment.centerLeft,
+              child: ColoredCode(
+                animateFromCode: _codeA,
+                code: _codeB,
               ),
             ),
             background: Container(color: Colors.blueGrey[900]),
