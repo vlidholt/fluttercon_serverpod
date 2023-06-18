@@ -54,13 +54,16 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SlideDeck(
       theme: buildTheme(),
-      builders: [
-        (context) => TitleSlide(
-              title: const Text('Whereas recognition of the inherent'),
-              subtitle: const Text('Serverpod is awesome!'),
-              background: Container(color: Colors.deepPurple),
-            ),
-        (context) => ContentSlide(
+      slides: [
+        Slide(
+          builder: (context) => TitleSlide(
+            title: const Text('Whereas recognition of the inherent'),
+            subtitle: const Text('Serverpod is awesome!'),
+            background: Container(color: Colors.deepPurple),
+          ),
+        ),
+        Slide(
+          builder: (context) => ContentSlide(
             title: const Text('Slide 2\nHello'),
             subtitle: const Text('Serverpod is awesome!\n2nd line'),
             background: Container(color: Colors.blue),
@@ -72,18 +75,22 @@ class MyHomePage extends StatelessWidget {
                 'Bullet 1b asfduououan sdopifuaopsfudpoasiufpoan sopi opasudf opasudfopau dfpoi apsodifhaskohfkoash flakjhf lkasjhf laksjf lkasj hflaksjh dlfkh alsd',
                 'Bullet 1',
               ],
-            )),
-        (context) => ContentSlide(
-              title: const Text('Third slide'),
-              subtitle: const Text('Serverpod is awesome!'),
-              content: const Align(
-                alignment: Alignment.centerLeft,
-                child: ColoredCode(
-                  code: _code,
-                ),
-              ),
-              background: Container(color: Colors.blueGrey[900]),
             ),
+          ),
+        ),
+        Slide(
+          builder: (context) => ContentSlide(
+            title: const Text('Third slide'),
+            subtitle: const Text('Serverpod is awesome!'),
+            content: const Align(
+              alignment: Alignment.centerLeft,
+              child: ColoredCode(
+                code: _code,
+              ),
+            ),
+            background: Container(color: Colors.blueGrey[900]),
+          ),
+        ),
       ],
     );
   }

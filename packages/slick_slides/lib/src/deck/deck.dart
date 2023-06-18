@@ -7,15 +7,25 @@ import 'package:slick_slides/src/theme.dart';
 
 typedef SlideBuilder = Widget Function(BuildContext context);
 
+class Slide {
+  const Slide({
+    required this.builder,
+    this.name,
+  });
+
+  final SlideBuilder builder;
+  final String? name;
+}
+
 class SlideDeck extends StatefulWidget {
   const SlideDeck({
-    required this.builders,
+    required this.slides,
     this.theme = const SlideThemeData(),
     this.size = const Size(1920, 1080),
     super.key,
   });
 
-  final List<SlideBuilder> builders;
+  final List<Slide> slides;
   final SlideThemeData theme;
   final Size size;
 
@@ -45,8 +55,8 @@ class SlideDeckState extends State<SlideDeck> {
   void _onChangeSlide(int delta) {
     setState(() {
       _index += delta;
-      if (_index >= widget.builders.length) {
-        _index = widget.builders.length - 1;
+      if (_index >= widget.slides.length) {
+        _index = widget.slides.length - 1;
       } else if (_index < 0) {
         _index = 0;
       }
@@ -77,11 +87,11 @@ class SlideDeckState extends State<SlideDeck> {
 
   @override
   Widget build(BuildContext context) {
-    if (_index >= widget.builders.length) {
-      _index = widget.builders.length - 1;
+    if (_index >= widget.slides.length) {
+      _index = widget.slides.length - 1;
     }
 
-    var slide = widget.builders[_index](context);
+    var slide = widget.slides[_index].builder(context);
 
     return Focus(
       focusNode: _focusNode,
