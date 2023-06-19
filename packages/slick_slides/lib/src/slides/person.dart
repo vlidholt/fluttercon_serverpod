@@ -21,7 +21,7 @@ class PersonSlide extends StatelessWidget {
 
     return Stack(
       children: [
-        if (background != null) background!,
+        background ?? theme.backgroundBuilder(context),
         Padding(
           padding: theme.borderPadding,
           child: Center(

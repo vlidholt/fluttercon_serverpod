@@ -20,7 +20,8 @@ class SlideThemeData {
       ),
     ],
     this.textTheme = const SlideTextThemeData(),
-  });
+    WidgetBuilder? backgroundBuilder,
+  }) : _backgroundBuilder = backgroundBuilder;
 
   final EdgeInsets borderPadding;
   final double subtitleSpacing;
@@ -29,6 +30,25 @@ class SlideThemeData {
   final BorderRadiusGeometry imageBorderRadius;
   final List<BoxShadow>? imageBoxShadow;
   final SlideTextThemeData textTheme;
+  final WidgetBuilder? _backgroundBuilder;
+
+  WidgetBuilder get backgroundBuilder {
+    return _backgroundBuilder ??
+        (context) {
+          return Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.grey.shade800,
+                  Colors.black,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          );
+        };
+  }
 }
 
 class SlideTextThemeData {
@@ -60,9 +80,9 @@ class SlideTextThemeData {
       fontSize: 32.0,
     ),
     this.bullet = const TextStyle(
-      fontFamily: 'Open Sans',
+      fontFamily: 'Inter',
       fontSize: 45.0,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
     ),
   });
 

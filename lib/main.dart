@@ -75,7 +75,6 @@ class MyHomePage extends StatelessWidget {
           builder: (context) => PersonSlide(
             name: const Text('Viktor Lidholt'),
             title: const Text('Founder of Serverpod'),
-            background: Container(color: Colors.blueGrey[900]),
             image: Image.asset('assets/portrait.png'),
           ),
         ),
@@ -100,37 +99,35 @@ class MyHomePage extends StatelessWidget {
           transition: const SlickFadeTransition(
             color: Colors.black,
           ),
-          builder: (context) => ContentSlide(
-            title: const Text('Code slide'),
-            subtitle: const Text('Serverpod is awesome!'),
-            content: const Align(
+          builder: (context) => const ContentSlide(
+            title: Text('Code slide'),
+            subtitle: Text('Serverpod is awesome!'),
+            content: Align(
               alignment: Alignment.centerLeft,
               child: ColoredCode(
                 code: _codeA,
               ),
             ),
-            background: Container(color: Colors.blueGrey[900]),
           ),
         ),
         Slide(
-          builder: (context) => ContentSlide(
-            title: const Text('Code slide'),
-            subtitle: const Text('Serverpod is awesome!'),
-            content: const Align(
+          builder: (context) => const ContentSlide(
+            title: Text('Code slide'),
+            subtitle: Text('Serverpod is awesome!'),
+            content: Align(
               alignment: Alignment.centerLeft,
               child: ColoredCode(
                 animateFromCode: _codeA,
                 code: _codeB,
               ),
             ),
-            background: Container(color: Colors.blueGrey[900]),
           ),
         ),
         Slide(
-          builder: (context) => ContentSlide(
-            title: const Text('Code slide'),
-            subtitle: const Text('Serverpod is awesome!'),
-            content: const Align(
+          builder: (context) => const ContentSlide(
+            title: Text('Code slide'),
+            subtitle: Text('Serverpod is awesome!'),
+            content: Align(
               alignment: Alignment.centerLeft,
               child: ColoredCode(
                 code: _codeB,
@@ -138,21 +135,19 @@ class MyHomePage extends StatelessWidget {
                 highlightedLines: [8, 9, 10, 11],
               ),
             ),
-            background: Container(color: Colors.blueGrey[900]),
           ),
         ),
         Slide(
-          builder: (context) => ContentSlide(
-            title: const Text('Code slide'),
-            subtitle: const Text('Serverpod is awesome!'),
-            content: const Align(
+          builder: (context) => const ContentSlide(
+            title: Text('Code slide'),
+            subtitle: Text('Serverpod is awesome!'),
+            content: Align(
               alignment: Alignment.centerLeft,
               child: ColoredCode(
                 code: _codeB,
                 highlightedLines: [12],
               ),
             ),
-            background: Container(color: Colors.blueGrey[900]),
           ),
         ),
         Slide(
