@@ -78,7 +78,7 @@ class _ColoredCodeState extends State<ColoredCode>
     if (widget.animateFromCode != null ||
         (widget.highlightedLines.isNotEmpty &&
             widget.animateHighlightedLines)) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _startAnimations();
       });
     } else {
