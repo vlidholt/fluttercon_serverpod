@@ -77,6 +77,9 @@ class MyHomePage extends StatelessWidget {
             title: const Text('Founder of Serverpod'),
             image: Image.asset('assets/portrait.png'),
           ),
+          onPrecache: (context) {
+            precacheImage(const AssetImage('assets/portrait.png'), context);
+          },
         ),
         Slide(
           transition: const SlickFadeTransition(),

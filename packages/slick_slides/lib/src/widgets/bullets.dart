@@ -57,7 +57,7 @@ class Bullets extends StatelessWidget {
     );
 
     return DefaultTextStyle(
-      style: theme.textTheme.bullet,
+      style: theme.textTheme.body,
       child: AutoSizeText.rich(joinedBullets),
     );
   }

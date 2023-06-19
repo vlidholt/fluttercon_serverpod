@@ -55,6 +55,7 @@ class SlideTextThemeData {
   const SlideTextThemeData({
     this.title = const TextStyle(
       fontFamily: 'Inter',
+      color: Colors.white,
       fontSize: 90.0,
       fontWeight: FontWeight.w900,
       height: 1.1,
@@ -69,20 +70,23 @@ class SlideTextThemeData {
     ),
     this.subtitle = const TextStyle(
       fontFamily: 'Inter',
+      color: Colors.white,
       fontSize: 55.0,
       fontWeight: FontWeight.w600,
       height: 1.1,
     ),
     this.subtitleGradient,
-    this.code = const TextStyle(
-      fontFamily: 'JetBrains Mono',
-      fontWeight: FontWeight.normal,
-      fontSize: 32.0,
-    ),
-    this.bullet = const TextStyle(
+    this.body = const TextStyle(
       fontFamily: 'Inter',
+      color: Colors.white,
       fontSize: 45.0,
       fontWeight: FontWeight.w400,
+    ),
+    this.code = const TextStyle(
+      fontFamily: 'JetBrains Mono',
+      color: Colors.white,
+      fontWeight: FontWeight.normal,
+      fontSize: 32.0,
     ),
   });
 
@@ -90,8 +94,8 @@ class SlideTextThemeData {
   final Gradient? titleGradient;
   final TextStyle subtitle;
   final Gradient? subtitleGradient;
+  final TextStyle body;
   final TextStyle code;
-  final TextStyle bullet;
 }
 
 class SlideTheme extends InheritedWidget {

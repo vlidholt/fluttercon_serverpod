@@ -10,11 +10,13 @@ class Slide {
     required this.builder,
     this.name,
     this.transition,
+    this.onPrecache,
   });
 
   final WidgetBuilder builder;
   final String? name;
   final SlickTransition? transition;
+  final void Function(BuildContext context)? onPrecache;
 }
 
 class SlideDeck extends StatefulWidget {
@@ -48,6 +50,18 @@ class SlideDeckState extends State<SlideDeck> {
   void initState() {
     super.initState();
     _focusNode.requestFocus();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _precacheSlide(1);
+    });
+  }
+
+  void _precacheSlide(int index) {
+    if (index >= widget.slides.length || index < 0) {
+      return;
+    }
+    var slide = widget.slides[index];
+    slide.onPrecache?.call(context);
   }
 
   @override
@@ -64,6 +78,10 @@ class SlideDeckState extends State<SlideDeck> {
       newIndex = 0;
     }
     if (_index != newIndex) {
+      // Precache the next and previous slides.
+      _precacheSlide(newIndex - 1);
+      _precacheSlide(newIndex + 1);
+
       setState(() {
         _index = newIndex;
         _navigatorKey.currentState?.pushReplacementNamed(
