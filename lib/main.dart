@@ -67,8 +67,16 @@ class MyHomePage extends StatelessWidget {
         Slide(
           builder: (context) => TitleSlide(
             title: const Text('Whereas recognition of the inherent'),
-            subtitle: const Text('Serverpod is awesome!'),
+            subtitle: const Text('Serverpod is awesome'),
             background: Container(color: Colors.deepPurple),
+          ),
+        ),
+        Slide(
+          builder: (context) => PersonSlide(
+            name: const Text('Viktor Lidholt'),
+            title: const Text('Founder of Serverpod'),
+            background: Container(color: Colors.blueGrey[900]),
+            image: Image.asset('assets/portrait.png'),
           ),
         ),
         Slide(

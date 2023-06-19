@@ -8,12 +8,26 @@ class SlideThemeData {
     ),
     this.titleSpacing = 20.0,
     this.subtitleSpacing = 0.0,
+    this.horizontalSpacing = 80.0,
+    this.imageBorderRadius = const BorderRadius.all(
+      Radius.circular(100),
+    ),
+    this.imageBoxShadow = const [
+      BoxShadow(
+        color: Colors.black38,
+        blurRadius: 40.0,
+        offset: Offset(0.0, 30.0),
+      ),
+    ],
     this.textTheme = const SlideTextThemeData(),
   });
 
   final EdgeInsets borderPadding;
   final double subtitleSpacing;
   final double titleSpacing;
+  final double horizontalSpacing;
+  final BorderRadiusGeometry imageBorderRadius;
+  final List<BoxShadow>? imageBoxShadow;
   final SlideTextThemeData textTheme;
 }
 
