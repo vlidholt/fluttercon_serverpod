@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slick_slides/src/theme.dart';
+import 'package:slick_slides/src/deck/theme.dart';
 import 'package:slick_slides/src/widgets/gradient_text.dart';
 
 class TitleSlide extends StatelessWidget {

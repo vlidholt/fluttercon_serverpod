@@ -4,18 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:slick_slides/slick_slides.dart';
 import 'package:slick_slides/src/deck/deck_controls.dart';
+import 'package:slick_slides/src/deck/slide_config.dart';
 
 class Slide {
   const Slide({
     required this.builder,
     this.name,
     this.transition,
+    this.theme,
     this.onPrecache,
   });
 
   final WidgetBuilder builder;
   final String? name;
   final SlickTransition? transition;
+  final SlideThemeData? theme;
   final void Function(BuildContext context)? onPrecache;
 }
 
@@ -203,10 +206,24 @@ class SlideDeckState extends State<SlideDeck> {
     var animate = settings.arguments as bool? ?? true;
 
     if (transition == null || !animate) {
+      var slideWidget = slide.builder(context);
+      if (slide.theme != null) {
+        slideWidget = SlideTheme(
+          data: slide.theme!,
+          child: slideWidget,
+        );
+      }
+
       return PageRouteBuilder(
-        transitionDuration: Duration.zero,
-        pageBuilder: (context, _, __) => slide.builder(context),
-      );
+          transitionDuration: Duration.zero,
+          pageBuilder: (context, _, __) {
+            return SlideConfig(
+              data: SlideConfigData(
+                animateIn: animate,
+              ),
+              child: slideWidget,
+            );
+          });
     } else {
       return transition.buildPageRoute(slide.builder);
     }

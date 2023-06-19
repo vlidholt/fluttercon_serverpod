@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/dracula.dart';
 import 'package:slick_slides/slick_slides.dart';
+import 'package:slick_slides/src/deck/slide_config.dart';
 
 const _dimmedCodeOpacity = 0.2;
 const _dimCodeDuration = Duration(milliseconds: 500);
@@ -47,6 +48,7 @@ class _ColoredCodeState extends State<ColoredCode>
   @override
   void initState() {
     super.initState();
+
     _typingController = AnimationController(
       vsync: this,
       value: 0.0,
@@ -72,6 +74,22 @@ class _ColoredCodeState extends State<ColoredCode>
     _highlightController.addListener(() {
       setState(() {});
     });
+
+    if (widget.animateFromCode != null ||
+        (widget.highlightedLines.isNotEmpty &&
+            widget.animateHighlightedLines)) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _startAnimations();
+      });
+    } else {
+      _highlightController.value = _dimmedCodeOpacity;
+    }
+  }
+
+  void _startAnimations() {
+    if (!_animateIn) {
+      return;
+    }
 
     if (widget.animateFromCode != null) {
       var numOperations = 0;
@@ -101,9 +119,12 @@ class _ColoredCodeState extends State<ColoredCode>
         _dimmedCodeOpacity,
         duration: _dimCodeDuration,
       );
-    } else {
-      _highlightController.value = _dimmedCodeOpacity;
     }
+  }
+
+  bool get _animateIn {
+    var config = SlideConfig.of(context);
+    return config?.animateIn ?? true;
   }
 
   @override
