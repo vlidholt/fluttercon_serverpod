@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttercon_serverpod/theme.dart';
 import 'package:slick_slides/slick_slides.dart';
 
 void main() {
@@ -62,7 +61,6 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SlideDeck(
-      theme: buildTheme(),
       slides: [
         Slide(
           builder: (context) => TitleSlide(
@@ -83,10 +81,10 @@ class MyHomePage extends StatelessWidget {
         ),
         Slide(
           transition: const SlickFadeTransition(),
+          theme: const SlideThemeData.light(),
           builder: (context) => ContentSlide(
             title: const Text('Slide 2\nHello'),
             subtitle: const Text('Serverpod is awesome!\n2nd line'),
-            background: Container(color: Colors.blue),
             content: Bullets(
               bullets: const [
                 'Bullet 1',

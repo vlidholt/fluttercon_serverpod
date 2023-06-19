@@ -25,7 +25,7 @@ class Slide {
 class SlideDeck extends StatefulWidget {
   const SlideDeck({
     required this.slides,
-    this.theme = const SlideThemeData(),
+    this.theme = const SlideThemeData.dark(),
     this.size = const Size(1920, 1080),
     super.key,
   });
@@ -206,17 +206,17 @@ class SlideDeckState extends State<SlideDeck> {
     var animate = settings.arguments as bool? ?? true;
 
     if (transition == null || !animate) {
-      var slideWidget = slide.builder(context);
-      if (slide.theme != null) {
-        slideWidget = SlideTheme(
-          data: slide.theme!,
-          child: slideWidget,
-        );
-      }
-
       return PageRouteBuilder(
           transitionDuration: Duration.zero,
           pageBuilder: (context, _, __) {
+            var slideWidget = slide.builder(context);
+            if (slide.theme != null) {
+              slideWidget = SlideTheme(
+                data: slide.theme!,
+                child: slideWidget,
+              );
+            }
+
             return SlideConfig(
               data: SlideConfigData(
                 animateIn: animate,
@@ -225,7 +225,16 @@ class SlideDeckState extends State<SlideDeck> {
             );
           });
     } else {
-      return transition.buildPageRoute(slide.builder);
+      return transition.buildPageRoute((context) {
+        var slideWidget = slide.builder(context);
+        if (slide.theme != null) {
+          slideWidget = SlideTheme(
+            data: slide.theme!,
+            child: slideWidget,
+          );
+        }
+        return slideWidget;
+      });
     }
   }
 }
