@@ -157,7 +157,7 @@ class SlideTextThemeData {
     ),
     this.subtitle = const TextStyle(
       fontFamily: 'Inter',
-      color: Color(0xff555555),
+      color: Color(0xff666666),
       fontSize: 55.0,
       fontWeight: FontWeight.w600,
       height: 1.1,
