@@ -5,6 +5,25 @@ import 'package:flutter/services.dart';
 import 'package:slick_slides/slick_slides.dart';
 import 'package:slick_slides/src/deck/deck_controls.dart';
 import 'package:slick_slides/src/deck/slide_config.dart';
+import 'package:syntax_highlight/syntax_highlight.dart';
+
+class SlickSlides {
+  static late Highlighter dartHighlighter;
+
+  Future<void> initialize() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    await Highlighter.load(['dart']);
+
+    var theme = HighligherTheme();
+    await theme.load(['dark_vs', 'dark_plus']);
+
+    dartHighlighter = Highlighter(
+      language: 'dart',
+      theme: theme,
+    );
+  }
+}
 
 class Slide {
   const Slide({

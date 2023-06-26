@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:slick_slides/slick_slides.dart';
 
-void main() {
+void main() async {
+  await SlickSlides().initialize();
   runApp(const MyApp());
 }
 
@@ -11,7 +12,6 @@ const _codeA = '''class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    );
   }
 }''';
 

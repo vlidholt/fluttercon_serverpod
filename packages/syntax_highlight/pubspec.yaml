@@ -1,21 +1,17 @@
-name: slick_slides
+name: syntax_highlight
 description: A new Flutter package project.
 version: 0.0.1
 homepage:
-publish_to: none
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
   flutter: ">=1.17.0"
-  
 
 dependencies:
   flutter:
     sdk: flutter
-  auto_size_text: ^3.0.0
-  diff_match_patch: ^0.4.1
-  syntax_highlight:
-    path: ../syntax_highlight
+  collection: ^1.17.1
+  string_scanner: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -27,20 +23,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-#   fonts:
-#     - family: Intery
-#       fonts:
-#         - asset: assets/fonts/inter.ttf
-#     - family: OpenSans
-#       fonts:
-#         - asset: assets/fonts/opensans.ttf
-#         - asset: assets/fonts/opensans_italic.ttf
-#           style: italic
-#     - family: JetbrainsMono
-#       fonts:
-#         - asset: assets/fonts/jetbrainsmono.ttf
-#         - asset: assets/fonts/jetbrainsmono_italic.ttf
-#           style: italic
+  assets:
+    - grammars/
+    - themes/
+
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

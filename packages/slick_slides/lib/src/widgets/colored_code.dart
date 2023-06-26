@@ -1,7 +1,5 @@
 import 'package:diff_match_patch/diff_match_patch.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/dracula.dart';
 import 'package:slick_slides/slick_slides.dart';
 import 'package:slick_slides/src/deck/slide_config.dart';
 
@@ -14,7 +12,6 @@ class ColoredCode extends StatefulWidget {
     this.animateFromCode,
     this.language = 'dart',
     this.tabSize = 2,
-    this.codeTheme = draculaTheme,
     this.textStyle,
     this.highlightedLines = const [],
     this.maxAnimationDuration = const Duration(milliseconds: 2000),
@@ -27,7 +24,6 @@ class ColoredCode extends StatefulWidget {
   final String? animateFromCode;
   final String language;
   final int tabSize;
-  final Map<String, TextStyle> codeTheme;
   final TextStyle? textStyle;
   final Duration maxAnimationDuration;
   final Duration keystrokeDuration;
@@ -138,11 +134,6 @@ class _ColoredCodeState extends State<ColoredCode>
   Widget build(BuildContext context) {
     var theme = SlideTheme.of(context)!;
 
-    var codeThemeCopy = Map<String, TextStyle>.from(widget.codeTheme);
-    codeThemeCopy['root'] = codeThemeCopy['root']!.copyWith(
-      backgroundColor: Colors.transparent,
-    );
-
     String animatedCode;
     if (_typingController.isAnimating &&
         widget.animateFromCode != null &&
@@ -154,51 +145,52 @@ class _ColoredCodeState extends State<ColoredCode>
       animatedCode = widget.code;
     }
 
-    var coloredCode = HighlightView(
-      animatedCode,
-      language: widget.language,
-      theme: codeThemeCopy,
-      textStyle: widget.textStyle ?? theme.textTheme.code,
-      tabSize: widget.tabSize,
+    var highlightedText = SlickSlides.dartHighlighter.highlight(animatedCode);
+
+    var coloredCode = Text.rich(
+      highlightedText,
     );
 
     if (widget.highlightedLines.isEmpty) {
-      return coloredCode;
+      return DefaultTextStyle(
+        style: theme.textTheme.code,
+        child: coloredCode,
+      );
     }
 
     var codeLines = animatedCode.split('\n');
     var numLines = codeLines.length;
 
-    var fadedColoredCode = HighlightView(
-      animatedCode,
-      language: widget.language,
-      theme: codeThemeCopy,
-      textStyle: widget.textStyle ?? theme.textTheme.code,
-      tabSize: widget.tabSize,
+    var fadedColoredCode = Text.rich(
+      highlightedText,
     );
 
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: _HighlightedLinesClipper(
-            numLines: numLines,
-            highlightedLines: widget.highlightedLines,
-            invert: false,
-          ),
-          child: coloredCode,
-        ),
-        Opacity(
-          opacity: _highlightController.value,
-          child: ClipPath(
+    return DefaultTextStyle(
+      style: theme.textTheme.code,
+      child: Stack(
+        children: [
+          ClipPath(
             clipper: _HighlightedLinesClipper(
               numLines: numLines,
               highlightedLines: widget.highlightedLines,
-              invert: true,
+              invert: false,
             ),
-            child: fadedColoredCode,
+            child: coloredCode,
           ),
-        ),
-      ],
+          if (_highlightController.value != 0.0)
+            Opacity(
+              opacity: _highlightController.value,
+              child: ClipPath(
+                clipper: _HighlightedLinesClipper(
+                  numLines: numLines,
+                  highlightedLines: widget.highlightedLines,
+                  invert: true,
+                ),
+                child: fadedColoredCode,
+              ),
+            ),
+        ],
+      ),
     );
   }
 
