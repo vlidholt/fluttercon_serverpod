@@ -56,8 +56,9 @@ class _ColoredCodeState extends State<ColoredCode>
           widget.highlightedLines.isNotEmpty) {
         // Start animating the highlighted lines after the typing animation
         // completes.
+        print('Starting highlight animation');
         _highlightController.animateTo(
-          0.1,
+          _dimmedCodeOpacity,
           duration: const Duration(milliseconds: 500),
         );
       }
@@ -141,6 +142,10 @@ class _ColoredCodeState extends State<ColoredCode>
       animatedCode = _getAnimatedCode(
         (_typingController.value * _numOperations).floor(),
       );
+    } else if (_animateIn &&
+        widget.animateFromCode != null &&
+        _typingController.value == 0.0) {
+      animatedCode = widget.animateFromCode!;
     } else {
       animatedCode = widget.code;
     }
@@ -165,6 +170,10 @@ class _ColoredCodeState extends State<ColoredCode>
       highlightedText,
     );
 
+    if (!_animateIn || !widget.animateHighlightedLines) {
+      _highlightController.value = _dimmedCodeOpacity;
+    }
+
     return DefaultTextStyle(
       style: theme.textTheme.code,
       child: Stack(
@@ -177,18 +186,18 @@ class _ColoredCodeState extends State<ColoredCode>
             ),
             child: coloredCode,
           ),
-          if (_highlightController.value != 0.0)
-            Opacity(
-              opacity: _highlightController.value,
-              child: ClipPath(
-                clipper: _HighlightedLinesClipper(
-                  numLines: numLines,
-                  highlightedLines: widget.highlightedLines,
-                  invert: true,
-                ),
-                child: fadedColoredCode,
+          // if (_highlightController.value != 0.0)
+          Opacity(
+            opacity: _highlightController.value,
+            child: ClipPath(
+              clipper: _HighlightedLinesClipper(
+                numLines: numLines,
+                highlightedLines: widget.highlightedLines,
+                invert: true,
               ),
+              child: fadedColoredCode,
             ),
+          ),
         ],
       ),
     );

@@ -24,7 +24,7 @@ class SlideThemeData {
       horizontal: 100.0,
       vertical: 60.0,
     ),
-    this.titleSpacing = 20.0,
+    this.titleSpacing = 40.0,
     this.subtitleSpacing = 0.0,
     this.horizontalSpacing = 80.0,
     this.imageBorderRadius = const BorderRadius.all(

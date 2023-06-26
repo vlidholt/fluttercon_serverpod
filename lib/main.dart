@@ -11,7 +11,6 @@ const _codeA = '''class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
   }
 }''';
 
@@ -104,7 +103,7 @@ class MyHomePage extends StatelessWidget {
             title: Text('Code slide'),
             subtitle: Text('Serverpod is awesome!'),
             content: Align(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.topLeft,
               child: ColoredCode(
                 code: _codeA,
               ),
@@ -116,23 +115,25 @@ class MyHomePage extends StatelessWidget {
             title: Text('Code slide'),
             subtitle: Text('Serverpod is awesome!'),
             content: Align(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.topLeft,
               child: ColoredCode(
                 animateFromCode: _codeA,
                 code: _codeB,
+                highlightedLines: [0, 1, 2],
+                animateHighlightedLines: true,
               ),
             ),
           ),
         ),
         Slide(
+          transition: const SlickFadeTransition(),
           builder: (context) => const ContentSlide(
             title: Text('Code slide'),
             subtitle: Text('Serverpod is awesome!'),
             content: Align(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.topLeft,
               child: ColoredCode(
                 code: _codeB,
-                animateHighlightedLines: true,
                 highlightedLines: [8, 9, 10, 11],
               ),
             ),
@@ -143,7 +144,7 @@ class MyHomePage extends StatelessWidget {
             title: Text('Code slide'),
             subtitle: Text('Serverpod is awesome!'),
             content: Align(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.topLeft,
               child: ColoredCode(
                 code: _codeB,
                 highlightedLines: [12],
