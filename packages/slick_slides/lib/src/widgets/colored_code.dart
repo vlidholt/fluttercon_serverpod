@@ -56,7 +56,6 @@ class _ColoredCodeState extends State<ColoredCode>
           widget.highlightedLines.isNotEmpty) {
         // Start animating the highlighted lines after the typing animation
         // completes.
-        print('Starting highlight animation');
         _highlightController.animateTo(
           _dimmedCodeOpacity,
           duration: const Duration(milliseconds: 500),
@@ -186,7 +185,6 @@ class _ColoredCodeState extends State<ColoredCode>
             ),
             child: coloredCode,
           ),
-          // if (_highlightController.value != 0.0)
           Opacity(
             opacity: _highlightController.value,
             child: ClipPath(
