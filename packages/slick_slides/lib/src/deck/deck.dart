@@ -15,7 +15,7 @@ class SlickSlides {
 
     await Highlighter.load(['dart']);
 
-    var theme = HighligherTheme();
+    var theme = HighlighterTheme();
     await theme.load(['dark_vs', 'dark_plus']);
 
     dartHighlighter = Highlighter(

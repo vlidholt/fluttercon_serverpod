@@ -36,7 +36,7 @@ class Highlighter {
 
   final String language;
   late final Grammar grammar;
-  final HighligherTheme theme;
+  final HighlighterTheme theme;
 
   TextSpan highlight(String code) {
     print('HIGHLIGHTING');
@@ -143,7 +143,7 @@ class Highlighter {
   }
 }
 
-class HighligherTheme {
+class HighlighterTheme {
   late final TextStyle? fallback;
   final scopes = <String, TextStyle>{};
 
