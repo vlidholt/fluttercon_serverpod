@@ -39,7 +39,6 @@ class Highlighter {
   final HighlighterTheme theme;
 
   TextSpan highlight(String code) {
-    print('HIGHLIGHTING');
     var spans = SpanParser.parse(grammar, code);
     var textSpans = <TextSpan>[];
     var bracketCounter = 0;

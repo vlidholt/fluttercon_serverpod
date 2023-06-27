@@ -197,8 +197,6 @@ abstract class GrammarMatcher {
       try {
         return _SimpleMatcher(json);
       } catch (e) {
-        print('SIMPLE MATCHER ERROR: $json');
-        print(e);
         return _SimpleMatcher({
           'match': _neverMatchingRegexStr,
         });
@@ -207,8 +205,6 @@ abstract class GrammarMatcher {
       try {
         return _MultilineMatcher(json);
       } catch (e) {
-        print('MULTILINE MATCHER ERROR: $json');
-        print(e);
         return _MultilineMatcher({
           'begin': _neverMatchingRegexStr,
         });
