@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluttercon_serverpod/src/widgets/image_with_title.dart';
+import 'package:fluttercon_serverpod/src/widgets/image_with_title_small.dart';
 import 'package:slick_slides/slick_slides.dart';
 
 void main() async {
@@ -181,31 +184,129 @@ class MyHomePage extends StatelessWidget {
         ),
         Slide(
           transition: _defaultTransition,
-          builder: (context) => ContentSlide(
-            title: const Text('Serverpod basics'),
-            subtitle: const Text('The missing server for Flutter'),
-            content: Bullets(
-              bullets: const [
-                'Serverpod is an open-source, scalable app server, written in '
-                    'Dart for the Flutter community.',
-                'TODO: Logging, caching, ORM',
-              ],
+          theme: const SlideThemeData.light(),
+          builder: (context) => const TitleSlide(
+            title: Text(
+              'Serverpod basics',
             ),
           ),
         ),
         Slide(
           transition: _defaultTransition,
+          theme: const SlideThemeData.light(),
           builder: (context) => ContentSlide(
             title: const Text('Serverpod basics'),
             subtitle: const Text('The missing server for Flutter'),
-            content: Bullets(
-              bullets: const [
-                'File uploads',
-                'Authentication',
-                'Real-time communication',
-                'Task scheduling',
-                'Health checks',
-                'Deplyed on Google Cloud or AWS',
+            content: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: ImageWithTitle(
+                    image: SvgPicture.asset(
+                      'assets/main_features/logging.svg',
+                      width: 400,
+                    ),
+                    title: const Text('Great logging'),
+                    subtitle: const Text('Visual exception and log viewer'),
+                  ),
+                ),
+                Expanded(
+                  child: ImageWithTitle(
+                    image: SvgPicture.asset(
+                      'assets/main_features/caching.svg',
+                      width: 400,
+                    ),
+                    title: const Text('Built-in caching'),
+                    subtitle: const Text('On server or\nwith Redis'),
+                  ),
+                ),
+                Expanded(
+                  child: ImageWithTitle(
+                    image: SvgPicture.asset(
+                      'assets/main_features/orm.svg',
+                      width: 400,
+                    ),
+                    title: const Text('Database access'),
+                    subtitle:
+                        const Text('Seamless integration with PostgreSQL'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Slide(
+          theme: const SlideThemeData.light(),
+          transition: _defaultTransition,
+          builder: (context) => ContentSlide(
+            title: const Text('Serverpod basics'),
+            subtitle: const Text('The missing server for Flutter'),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: SmallImageWithTitle(
+                        image: SvgPicture.asset(
+                          'assets/extra_features/file_uploads.svg',
+                          width: 140,
+                        ),
+                        title: const Text('File uploads'),
+                      ),
+                    ),
+                    Expanded(
+                      child: SmallImageWithTitle(
+                        image: SvgPicture.asset(
+                          'assets/extra_features/auth.svg',
+                          width: 140,
+                        ),
+                        title: const Text('Authentication'),
+                      ),
+                    ),
+                    Expanded(
+                      child: SmallImageWithTitle(
+                        image: SvgPicture.asset(
+                          'assets/extra_features/streaming.svg',
+                          width: 140,
+                        ),
+                        title: const Text('Data streaming'),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 120),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SmallImageWithTitle(
+                        image: SvgPicture.asset(
+                          'assets/extra_features/scheduling.svg',
+                          width: 140,
+                        ),
+                        title: const Text('Task scheduling'),
+                      ),
+                    ),
+                    Expanded(
+                      child: SmallImageWithTitle(
+                        image: SvgPicture.asset(
+                          'assets/extra_features/health.svg',
+                          width: 140,
+                        ),
+                        title: const Text('Health checks'),
+                      ),
+                    ),
+                    Expanded(
+                      child: SmallImageWithTitle(
+                        image: SvgPicture.asset(
+                          'assets/extra_features/deployment.svg',
+                          width: 140,
+                        ),
+                        title: const Text('Easy deployment'),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
