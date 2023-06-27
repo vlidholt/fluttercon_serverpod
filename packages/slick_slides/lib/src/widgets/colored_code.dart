@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:slick_slides/slick_slides.dart';
 import 'package:slick_slides/src/deck/slide_config.dart';
 
-const _dimmedCodeOpacity = 0.2;
+const _dimmedCodeOpacity = 0.3;
 const _dimCodeDuration = Duration(milliseconds: 500);
 
 class ColoredCode extends StatefulWidget {
