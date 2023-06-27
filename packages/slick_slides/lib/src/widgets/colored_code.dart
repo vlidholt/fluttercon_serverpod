@@ -149,7 +149,8 @@ class _ColoredCodeState extends State<ColoredCode>
       animatedCode = widget.code;
     }
 
-    var highlightedText = SlickSlides.dartHighlighter.highlight(animatedCode);
+    var highlightedText =
+        SlickSlides.highlighters[widget.language]!.highlight(animatedCode);
 
     var coloredCode = Text.rich(
       highlightedText,

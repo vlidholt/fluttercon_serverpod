@@ -10,14 +10,14 @@ const _defaultTransition = SlickFadeTransition(
   color: Colors.black,
 );
 
-const _codeA = '''// Endpoint on the server
+const _codeServerExample = '''// Endpoint on the server
 class ExampleEndpoint extends Endpoint {
   Future<String> hello(Session session, String name) async {
     return 'Hello \$name';
   }
 }''';
 
-const _codeB = '''// Endpoint on the server
+const _codeClientExample = '''// Endpoint on the server
 class ExampleEndpoint extends Endpoint {
   Future<String> hello(Session session, String name) async {
     return 'Hello \$name';
@@ -27,6 +27,14 @@ class ExampleEndpoint extends Endpoint {
 // Client code
 var client = Client('https://api.example.com');
 var result = await client.example.hello('World');
+''';
+
+const _codeSerializationExample = '''### Represents a person.
+class: Person
+fields:
+  firstName: String
+  lastName: String
+  birthday: DateTime?
 ''';
 
 class MyApp extends StatelessWidget {
@@ -136,7 +144,7 @@ class MyHomePage extends StatelessWidget {
             content: Align(
               alignment: Alignment.topLeft,
               child: ColoredCode(
-                code: _codeA,
+                code: _codeServerExample,
               ),
             ),
           ),
@@ -148,8 +156,9 @@ class MyHomePage extends StatelessWidget {
             content: Align(
               alignment: Alignment.topLeft,
               child: ColoredCode(
-                code: _codeB,
-                animateFromCode: _codeA,
+                code: _codeClientExample,
+                animateFromCode: _codeServerExample,
+                maxAnimationDuration: Duration(seconds: 1),
                 highlightedLines: [7, 8, 9, 10, 11, 12],
                 animateHighlightedLines: true,
               ),
@@ -157,16 +166,15 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         Slide(
+          transition: _defaultTransition,
           builder: (context) => const ContentSlide(
-            title: Text('Code slide'),
-            subtitle: Text('Serverpod is awesome!'),
+            title: Text('Serverpod'),
+            subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
               child: ColoredCode(
-                animateFromCode: _codeA,
-                code: _codeB,
-                highlightedLines: [0, 1, 2],
-                animateHighlightedLines: true,
+                code: _codeSerializationExample,
+                language: 'yaml',
               ),
             ),
           ),
@@ -179,7 +187,8 @@ class MyHomePage extends StatelessWidget {
             content: Align(
               alignment: Alignment.topLeft,
               child: ColoredCode(
-                code: _codeB,
+                code: _codeClientExample,
+                language: 'yaml',
                 highlightedLines: [8, 9, 10, 11],
               ),
             ),
@@ -192,7 +201,7 @@ class MyHomePage extends StatelessWidget {
             content: Align(
               alignment: Alignment.topLeft,
               child: ColoredCode(
-                code: _codeB,
+                code: _codeClientExample,
                 highlightedLines: [12],
               ),
             ),

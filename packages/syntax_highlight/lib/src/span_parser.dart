@@ -13,6 +13,8 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:string_scanner/string_scanner.dart';
 
+const _neverMatchingRegexStr = r'^(?!x)x';
+
 //TODO(jacobr): cleanup.
 // ignore: avoid_classes_with_only_static_members
 abstract class SpanParser {
@@ -192,9 +194,25 @@ abstract class GrammarMatcher {
     if (_IncludeMatcher.isType(json)) {
       return _IncludeMatcher(json['include'] as String);
     } else if (_SimpleMatcher.isType(json)) {
-      return _SimpleMatcher(json);
+      try {
+        return _SimpleMatcher(json);
+      } catch (e) {
+        print('SIMPLE MATCHER ERROR: $json');
+        print(e);
+        return _SimpleMatcher({
+          'match': _neverMatchingRegexStr,
+        });
+      }
     } else if (_MultilineMatcher.isType(json)) {
-      return _MultilineMatcher(json);
+      try {
+        return _MultilineMatcher(json);
+      } catch (e) {
+        print('MULTILINE MATCHER ERROR: $json');
+        print(e);
+        return _MultilineMatcher({
+          'begin': _neverMatchingRegexStr,
+        });
+      }
     } else if (_PatternMatcher.isType(json)) {
       return _PatternMatcher(json);
     }

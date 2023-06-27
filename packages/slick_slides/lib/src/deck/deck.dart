@@ -9,20 +9,25 @@ import 'package:slick_slides/src/deck/slide_config.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
 class SlickSlides {
-  static late Highlighter dartHighlighter;
+  static final highlighters = <String, Highlighter>{};
 
   Future<void> initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     initMeeduPlayer();
 
-    await Highlighter.load(['dart']);
+    await Highlighter.load(['dart', 'yaml']);
 
     var theme = HighlighterTheme();
     await theme.load(['dark_vs', 'dark_plus']);
 
-    dartHighlighter = Highlighter(
+    highlighters['dart'] = Highlighter(
       language: 'dart',
+      theme: theme,
+    );
+
+    highlighters['yaml'] = Highlighter(
+      language: 'yaml',
       theme: theme,
     );
   }
