@@ -195,7 +195,7 @@ class MyHomePage extends StatelessWidget {
           transition: _defaultTransition,
           theme: const SlideThemeData.light(),
           builder: (context) => ContentSlide(
-            title: const Text('Serverpod basics'),
+            title: const Text('Serverpod'),
             subtitle: const Text('The missing server for Flutter'),
             content: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -217,7 +217,7 @@ class MyHomePage extends StatelessWidget {
                       width: 400,
                     ),
                     title: const Text('Built-in caching'),
-                    subtitle: const Text('On server or\nwith Redis'),
+                    subtitle: const Text('Locally on server\nor with Redis'),
                   ),
                 ),
                 Expanded(
@@ -239,7 +239,7 @@ class MyHomePage extends StatelessWidget {
           theme: const SlideThemeData.light(),
           transition: _defaultTransition,
           builder: (context) => ContentSlide(
-            title: const Text('Serverpod basics'),
+            title: const Text('Serverpod'),
             subtitle: const Text('The missing server for Flutter'),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -314,7 +314,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _defaultTransition,
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Calling server methods'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -326,7 +326,7 @@ class MyHomePage extends StatelessWidget {
         ),
         Slide(
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Calling server methods'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -343,7 +343,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _defaultTransition,
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -356,7 +356,7 @@ class MyHomePage extends StatelessWidget {
         ),
         Slide(
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -370,7 +370,7 @@ class MyHomePage extends StatelessWidget {
         ),
         Slide(
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -385,7 +385,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _crossfadeTransistion,
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Serializing objects'),
             content: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,7 +408,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _defaultTransition,
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -423,7 +423,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _crossfadeTransistion,
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -437,7 +437,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _crossfadeTransistion,
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod basics'),
+            title: Text('Serverpod'),
             subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
