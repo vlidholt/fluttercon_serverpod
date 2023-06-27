@@ -20,7 +20,9 @@ class SmallImageWithTitle extends StatelessWidget {
         const SizedBox(width: 20.0),
         Expanded(
           child: DefaultTextStyle(
-            style: theme.textTheme.body,
+            style: theme.textTheme.body.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
             child: title,
           ),
         ),
