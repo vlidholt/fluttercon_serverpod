@@ -14,10 +14,19 @@
         },
         {
             "name": "entity.name.tag.yaml",
-            "match": "^\\s*(-|\\w+):",
+            "match": "^\\s*\\w+",
             "captures": {
                 "0": {
                     "name": "punctuation.definition.tag.yaml"
+                }
+            }
+        },
+        {
+            "name": "punctuation.separator.key-value.yaml",
+            "match": ":",
+            "captures": {
+                "0": {
+                    "name": "punctuation.separator.key-value.yaml"
                 }
             }
         },
