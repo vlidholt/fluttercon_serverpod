@@ -10,6 +10,8 @@ const _defaultTransition = SlickFadeTransition(
   color: Colors.black,
 );
 
+const _crossfadeTransistion = SlickFadeTransition();
+
 const _codeServerExample = '''// Endpoint on the server
 class ExampleEndpoint extends Endpoint {
   Future<String> hello(Session session, String name) async {
@@ -29,13 +31,85 @@ var client = Client('https://api.example.com');
 var result = await client.example.hello('World');
 ''';
 
-const _codeSerializationExample = '''### Represents a person.
-class: Person
+const _codeSerializationExample = '''class: Person
 fields:
   firstName: String
   lastName: String
   birthday: DateTime?
+  belongings: List<Belonging>
 ''';
+
+const _codeSerializationWithTableExample = '''class: Person
+table: person
+fields:
+  firstName: String
+  lastName: String
+  birthday: DateTime?
+  belongings: List<Belonging>
+''';
+
+const _codeSerializationWithTableAndDocsExample = '''### Represents a person.
+class: Person
+table: person
+fields:
+  ### The first name of the person.
+  firstName: String
+
+  ### The last name of the person.
+  lastName: String
+
+  ### Optional birthday.
+  birthday: DateTime?
+
+  ### The belongings of the person.
+  belongings: List<Belonging>
+''';
+
+const _codeSerializationDartExample = '''// Create a Person object in Dart
+var person = Person(
+  firstName: 'John',
+  lastName: 'Doe',
+  belongings: [
+    Belonging(
+      name: 'Phone',
+      value: 1000,
+    ),
+    Belonging(
+      name: 'Computer',
+      value: 2000,
+    ),
+  ],
+);''';
+
+const _codePeopleEndpointExample = '''class PeopleEndpoint {
+  Future<List<Person>> getPerson(Session session, String lastName) async {
+    return Person.find(
+      where: (t) => t.lastName.equals(lastName),
+    );
+  }
+
+  Future<void> addPerson(Session session, Person person) async {
+    await Person.insert(session, person);
+  }
+}''';
+
+const _codePeopleEndpointWithClientExample = '''class PeopleEndpoint {
+  Future<List<Person>> getPerson(Session session, String lastName) async {
+    return Person.find(
+      where: (t) => t.lastName.equals(lastName),
+    );
+  }
+
+  Future<void> addPerson(Session session, Person person) async {
+    await Person.insert(session, person);
+  }
+}
+
+// Client code for getting a person.
+var person = await client.people.getPerson('Doe');
+
+// Client code for adding a person.
+await client.people.addPerson(person);''';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -97,7 +171,7 @@ class MyHomePage extends StatelessWidget {
             subtitle: const Text('What will we learn today?'),
             content: Bullets(
               bullets: const [
-                'Why Serverpod',
+                'Serverpod basics',
                 'Real-time communication',
                 'Optimizing data transfer',
                 'Fancy drawing with noise',
@@ -108,7 +182,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _defaultTransition,
           builder: (context) => ContentSlide(
-            title: const Text('Serverpod'),
+            title: const Text('Serverpod basics'),
             subtitle: const Text('The missing server for Flutter'),
             content: Bullets(
               bullets: const [
@@ -122,7 +196,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _defaultTransition,
           builder: (context) => ContentSlide(
-            title: const Text('Serverpod'),
+            title: const Text('Serverpod basics'),
             subtitle: const Text('The missing server for Flutter'),
             content: Bullets(
               bullets: const [
@@ -139,7 +213,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _defaultTransition,
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod'),
+            title: Text('Serverpod basics'),
             subtitle: Text('Calling server methods'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -151,7 +225,7 @@ class MyHomePage extends StatelessWidget {
         ),
         Slide(
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod'),
+            title: Text('Serverpod basics'),
             subtitle: Text('Calling server methods'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -168,7 +242,7 @@ class MyHomePage extends StatelessWidget {
         Slide(
           transition: _defaultTransition,
           builder: (context) => const ContentSlide(
-            title: Text('Serverpod'),
+            title: Text('Serverpod basics'),
             subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
@@ -180,62 +254,105 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         Slide(
-          transition: const SlickFadeTransition(),
           builder: (context) => const ContentSlide(
-            title: Text('Code slide'),
-            subtitle: Text('Serverpod is awesome!'),
+            title: Text('Serverpod basics'),
+            subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
               child: ColoredCode(
-                code: _codeClientExample,
+                code: _codeSerializationWithTableExample,
+                animateFromCode: _codeSerializationExample,
                 language: 'yaml',
-                highlightedLines: [8, 9, 10, 11],
               ),
             ),
           ),
         ),
         Slide(
           builder: (context) => const ContentSlide(
-            title: Text('Code slide'),
-            subtitle: Text('Serverpod is awesome!'),
+            title: Text('Serverpod basics'),
+            subtitle: Text('Serializing objects'),
             content: Align(
               alignment: Alignment.topLeft,
               child: ColoredCode(
-                code: _codeClientExample,
-                highlightedLines: [12],
+                code: _codeSerializationWithTableAndDocsExample,
+                animateFromCode: _codeSerializationWithTableExample,
+                language: 'yaml',
               ),
             ),
           ),
         ),
         Slide(
-          transition: const SlickFadeTransition(),
-          builder: (context) => ContentSlide(
-            title: const Text('Slide 1 with Hero'),
-            subtitle: const Text('So much fun'),
-            background: Container(color: Colors.white),
-            content: const Align(
-              alignment: Alignment.centerLeft,
-              child: Hero(
-                tag: 'hero',
-                child: FlutterLogo(size: 200),
+          transition: _crossfadeTransistion,
+          builder: (context) => const ContentSlide(
+            title: Text('Serverpod basics'),
+            subtitle: Text('Serializing objects'),
+            content: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ColoredCode(
+                    code: _codeSerializationWithTableAndDocsExample,
+                    language: 'yaml',
+                  ),
+                ),
+                Expanded(
+                  child: ColoredCode(
+                    code: _codeSerializationDartExample,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Slide(
+          transition: _defaultTransition,
+          builder: (context) => const ContentSlide(
+            title: Text('Serverpod basics'),
+            subtitle: Text('Serializing objects'),
+            content: Align(
+              alignment: Alignment.topLeft,
+              child: ColoredCode(
+                code: _codePeopleEndpointExample,
+                highlightedLines: [1, 2, 3, 4],
+                animateHighlightedLines: true,
               ),
             ),
           ),
         ),
         Slide(
-          transition: const SlickFadeTransition(
-            duration: Duration(seconds: 1),
-          ),
-          builder: (context) => ContentSlide(
-            title: const Text('Slide 2 with Hero'),
-            subtitle: const Text('but is it really?'),
-            background: Container(color: Colors.black),
-            content: const Align(
-              alignment: Alignment.centerRight,
-              child: Hero(
-                tag: 'hero',
-                child: FlutterLogo(size: 400),
+          transition: _crossfadeTransistion,
+          builder: (context) => const ContentSlide(
+            title: Text('Serverpod basics'),
+            subtitle: Text('Serializing objects'),
+            content: Align(
+              alignment: Alignment.topLeft,
+              child: ColoredCode(
+                code: _codePeopleEndpointExample,
+                highlightedLines: [7, 8, 9],
               ),
+            ),
+          ),
+        ),
+        Slide(
+          transition: _crossfadeTransistion,
+          builder: (context) => const ContentSlide(
+            title: Text('Serverpod basics'),
+            subtitle: Text('Serializing objects'),
+            content: Align(
+              alignment: Alignment.topLeft,
+              child: ColoredCode(
+                code: _codePeopleEndpointWithClientExample,
+                animateFromCode: _codePeopleEndpointExample,
+                highlightedLines: [12, 13, 14, 15, 16, 17],
+              ),
+            ),
+          ),
+        ),
+        Slide(
+          transition: _defaultTransition,
+          builder: (context) => const TitleSlide(
+            title: Text(
+              'Real-time communication',
             ),
           ),
         ),
