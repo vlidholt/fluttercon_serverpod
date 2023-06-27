@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_meedu_videoplayer/meedu_player.dart';
 import 'package:slick_slides/slick_slides.dart';
 import 'package:slick_slides/src/deck/deck_controls.dart';
 import 'package:slick_slides/src/deck/slide_config.dart';
@@ -12,6 +13,8 @@ class SlickSlides {
 
   Future<void> initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    initMeeduPlayer();
 
     await Highlighter.load(['dart']);
 
@@ -185,7 +188,7 @@ class SlideDeckState extends State<SlideDeck> {
                     ),
                   ),
                   Positioned(
-                    bottom: 16.0,
+                    top: 16.0,
                     right: 16.0,
                     child: MouseRegion(
                       onEnter: (event) {

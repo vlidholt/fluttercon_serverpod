@@ -6,30 +6,28 @@ void main() async {
   runApp(const MyApp());
 }
 
-const _codeA = '''class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+const _defaultTransition = SlickFadeTransition(
+  color: Colors.black,
+);
 
-  @override
-  Widget build(BuildContext context) {
+const _codeA = '''// Endpoint on the server
+class ExampleEndpoint extends Endpoint {
+  Future<String> hello(Session session, String name) async {
+    return 'Hello \$name';
   }
 }''';
 
-const _codeB = '''// Adding a long comment on the first line
-class MyApp extends StatelessWidget {
-  const ServerpodApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Serverpod Presentation',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-        useMaterial3: true,
-      ),
-      home: const FantasticApp(),
-    );
+const _codeB = '''// Endpoint on the server
+class ExampleEndpoint extends Endpoint {
+  Future<String> hello(Session session, String name) async {
+    return 'Hello \$name';
   }
-}''';
+}
+
+// Client code
+var client = Client('https://api.example.com');
+var result = await client.example.hello('World');
+''';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,7 +44,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.compact,
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const Scaffold(body: MyHomePage()),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -62,13 +60,14 @@ class MyHomePage extends StatelessWidget {
     return SlideDeck(
       slides: [
         Slide(
-          builder: (context) => TitleSlide(
-            title: const Text('Whereas recognition of the inherent'),
-            subtitle: const Text('Serverpod is awesome'),
-            background: Container(color: Colors.deepPurple),
+          builder: (context) => const TitleSlide(
+            title: Text(
+              'Building a multi-player game with Flutter & Serverpod',
+            ),
           ),
         ),
         Slide(
+          transition: _defaultTransition,
           builder: (context) => PersonSlide(
             name: const Text('Viktor Lidholt'),
             title: const Text('Founder of Serverpod'),
@@ -79,33 +78,80 @@ class MyHomePage extends StatelessWidget {
           },
         ),
         Slide(
-          transition: const SlickFadeTransition(),
-          theme: const SlideThemeData.light(),
+          builder: (context) => const VideoSlide(
+            asset: 'assets/gameplay.mov',
+          ),
+        ),
+        Slide(
+          transition: _defaultTransition,
           builder: (context) => ContentSlide(
-            title: const Text('Slide 2\nHello'),
-            subtitle: const Text('Serverpod is awesome!\n2nd line'),
+            title: const Text('Overview'),
+            subtitle: const Text('What will we learn today?'),
             content: Bullets(
               bullets: const [
-                'Bullet 1',
-                'Bullet 1',
-                'Bullet 1',
-                'Bullet 1b asfduououan sdopifuaopsfudpoasiufpoan sopi opasudf opasudfopau dfpoi apsodifhaskohfkoash flakjhf lkasjhf laksjf lkasj hflaksjh dlfkh alsd',
-                'Bullet 1',
+                'Why Serverpod',
+                'Real-time communication',
+                'Optimizing data transfer',
+                'Fancy drawing with noise',
               ],
             ),
           ),
         ),
         Slide(
-          transition: const SlickFadeTransition(
-            color: Colors.black,
+          transition: _defaultTransition,
+          builder: (context) => ContentSlide(
+            title: const Text('Serverpod'),
+            subtitle: const Text('The missing server for Flutter'),
+            content: Bullets(
+              bullets: const [
+                'Serverpod is an open-source, scalable app server, written in '
+                    'Dart for the Flutter community.',
+                'TODO: Logging, caching, ORM',
+              ],
+            ),
           ),
+        ),
+        Slide(
+          transition: _defaultTransition,
+          builder: (context) => ContentSlide(
+            title: const Text('Serverpod'),
+            subtitle: const Text('The missing server for Flutter'),
+            content: Bullets(
+              bullets: const [
+                'File uploads',
+                'Authentication',
+                'Real-time communication',
+                'Task scheduling',
+                'Health checks',
+                'Deplyed on Google Cloud or AWS',
+              ],
+            ),
+          ),
+        ),
+        Slide(
+          transition: _defaultTransition,
           builder: (context) => const ContentSlide(
-            title: Text('Code slide'),
-            subtitle: Text('Serverpod is awesome!'),
+            title: Text('Serverpod'),
+            subtitle: Text('Calling server methods'),
             content: Align(
               alignment: Alignment.topLeft,
               child: ColoredCode(
                 code: _codeA,
+              ),
+            ),
+          ),
+        ),
+        Slide(
+          builder: (context) => const ContentSlide(
+            title: Text('Serverpod'),
+            subtitle: Text('Calling server methods'),
+            content: Align(
+              alignment: Alignment.topLeft,
+              child: ColoredCode(
+                code: _codeB,
+                animateFromCode: _codeA,
+                highlightedLines: [7, 8, 9, 10, 11, 12],
+                animateHighlightedLines: true,
               ),
             ),
           ),
