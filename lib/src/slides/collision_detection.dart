@@ -286,26 +286,26 @@ final naiveCollisionView100 = NaiveCollisionView(100);
 class NaiveCollisionView extends NodeWithSize {
   final int _numberOfObjects;
 
-  NaiveCollisionView(this._numberOfObjects) : super(const Size(1024, 768)) {
+  NaiveCollisionView(this._numberOfObjects) : super(const Size(1720, 960)) {
     var random = Random();
 
     for (int i = 0; i < _numberOfObjects; i++) {
       _positions.add(
         Offset(
-          random.nextDouble() * 1024,
-          random.nextDouble() * 768,
+          random.nextDouble() * 1720,
+          random.nextDouble() * 960,
         ),
       );
 
       _velocities.add(
         Offset(
-          random.nextDouble() * 50 - 25,
-          random.nextDouble() * 50 - 25,
+          random.nextDouble() * 100 - 50,
+          random.nextDouble() * 100 - 50,
         ),
       );
 
       _radii.add(
-        random.nextDouble() * 5 + 2,
+        random.nextDouble() * 10 + 4,
       );
     }
   }
@@ -325,15 +325,15 @@ class NaiveCollisionView extends NodeWithSize {
       if (_positions[i].dx < 0) {
         _positions[i] = Offset(0, _positions[i].dy);
         _velocities[i] = Offset(-_velocities[i].dx, _velocities[i].dy);
-      } else if (_positions[i].dx > 1024) {
-        _positions[i] = Offset(1024, _positions[i].dy);
+      } else if (_positions[i].dx > 1720) {
+        _positions[i] = Offset(1720, _positions[i].dy);
         _velocities[i] = Offset(-_velocities[i].dx, _velocities[i].dy);
       }
       if (_positions[i].dy < 0) {
         _positions[i] = Offset(_positions[i].dx, 0);
         _velocities[i] = Offset(_velocities[i].dx, -_velocities[i].dy);
-      } else if (_positions[i].dy > 768) {
-        _positions[i] = Offset(_positions[i].dx, 768);
+      } else if (_positions[i].dy > 960) {
+        _positions[i] = Offset(_positions[i].dx, 960);
         _velocities[i] = Offset(_velocities[i].dx, -_velocities[i].dy);
       }
     }
@@ -344,7 +344,9 @@ class NaiveCollisionView extends NodeWithSize {
     super.paint(canvas);
 
     var circlePaint = Paint()..color = Colors.red;
-    var linePaint = Paint()..color = Colors.white24;
+    var linePaint = Paint()
+      ..color = Colors.white10
+      ..strokeWidth = 2.0;
 
     for (var i = 0; i < _numberOfObjects; i++) {
       for (var j = 0; j < _numberOfObjects; j++) {
