@@ -42,10 +42,10 @@ class MyHomePage extends StatelessWidget {
     return SlideDeck(
       slides: [
         // ...introSlides,
-        ...serverpodBasicsSlides,
+        // ...serverpodBasicsSlides,
         // ...realtimeCommunicationsSlides,
         // ...buildingTheGameSlides,
-        // ...collisionDetectionSlides,
+        ...collisionDetectionSlides,
       ],
     );
   }

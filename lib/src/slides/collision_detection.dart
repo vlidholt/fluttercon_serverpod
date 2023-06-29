@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttercon_serverpod/src/quadtree/quadtree.dart';
-import 'package:fluttercon_serverpod/src/quadtree/sidebar.dart';
 import 'package:fluttercon_serverpod/src/slides/shared.dart';
 import 'package:slick_slides/slick_slides.dart';
 
-const _chapterTitle = 'Serverpod';
+const _chapterTitle = 'Collision detection';
 
 const _codePeopleEndpointExample = '''class PeopleEndpoint {
   Future<List<Person>> getPerson(Session session, String lastName) async {
@@ -40,27 +39,19 @@ await client.people.addPerson(person);''';
 final collisionDetectionSlides = [
   Slide(
     transition: defaultTransition,
-    theme: const SlideThemeData.light(),
+    // theme: const SlideThemeData.light(),
     builder: (context) => const TitleSlide(
       title: Text(
-        'Serverpod basics',
+        _chapterTitle,
       ),
     ),
   ),
   Slide(
+    transition: defaultTransition,
     builder: (context) {
-      return ProviderScope(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 300,
-              child: Sidebar(),
-            ),
-            Expanded(
-              child: QuadtreeView(),
-            ),
-          ],
+      return const ContentSlide(
+        content: ProviderScope(
+          child: QuadtreeView(),
         ),
       );
     },

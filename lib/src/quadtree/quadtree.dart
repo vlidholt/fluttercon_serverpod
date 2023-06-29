@@ -8,11 +8,13 @@ import 'package:quadtree_dart/quadtree_dart.dart';
 import 'package:vector_math/vector_math.dart' as vec;
 
 class QuadtreeView extends StatefulWidget {
+  const QuadtreeView({super.key});
+
   @override
-  _QuadtreeViewState createState() => _QuadtreeViewState();
+  QuadtreeViewState createState() => QuadtreeViewState();
 }
 
-class _QuadtreeViewState extends State<QuadtreeView>
+class QuadtreeViewState extends State<QuadtreeView>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   Size? previousSize;
@@ -32,77 +34,71 @@ class _QuadtreeViewState extends State<QuadtreeView>
   void initState() {
     super.initState();
 
-    controller =
-        AnimationController(vsync: this, duration: Duration(hours: 69420))
-          ..addListener(() {
-            if (quadtree == null) return;
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(hours: 69420),
+    )
+      ..addListener(() {
+        if (quadtree == null) return;
 
-            objects = quadtree!.retrieve(quadtree!.bounds);
+        objects = quadtree!.retrieve(quadtree!.bounds);
 
-            quadtree!.clear();
-            for (final o in objects) {
-              if (shouldHaveVelocity) {
-                bool collided = false;
-                if (shouldCollide) {
-                  for (final o2 in quadtree!.retrieve(o)) {
-                    if (o.intersects(o2)) {
-                      collided = true;
-                      o.collide(o2);
-                      break;
-                    }
-                  }
+        quadtree!.clear();
+        for (final o in objects) {
+          if (shouldHaveVelocity) {
+            bool collided = false;
+            if (shouldCollide) {
+              for (final o2 in quadtree!.retrieve(o)) {
+                if (o.intersects(o2)) {
+                  collided = true;
+                  o.collide(o2);
+                  break;
                 }
+              }
+            }
 
-                if (!collided) {
-                  if (o.x + o.width >=
-                          quadtree!.bounds.x + quadtree!.bounds.width ||
-                      o.x <= quadtree!.bounds.x) {
-                    o.collideLR();
-                  }
-
-                  if (o.y + o.height >=
-                          quadtree!.bounds.y + quadtree!.bounds.height ||
-                      o.y <= quadtree!.bounds.y) {
-                    o.collideTB();
-                  }
-                }
-
-                o.tick();
+            if (!collided) {
+              if (o.x + o.width >=
+                      quadtree!.bounds.x + quadtree!.bounds.width ||
+                  o.x <= quadtree!.bounds.x) {
+                o.collideLR();
               }
 
-              quadtree!.insert(o);
-            }
-            nodes = quadtree!.retrieveAllNodes();
-
-            if (hoveringOffset != null) {
-              matchedObjects = quadtree!.retrieve(Rect(
-                x: hoveringOffset!.dx - spotlightDiameter / 2,
-                y: hoveringOffset!.dy - spotlightDiameter / 2,
-                height: spotlightDiameter,
-                width: spotlightDiameter,
-              ));
+              if (o.y + o.height >=
+                      quadtree!.bounds.y + quadtree!.bounds.height ||
+                  o.y <= quadtree!.bounds.y) {
+                o.collideTB();
+              }
             }
 
-            setState(() {});
-          })
-          ..forward();
+            o.tick();
+          }
+
+          quadtree!.insert(o);
+        }
+        nodes = quadtree!.retrieveAllNodes();
+
+        if (hoveringOffset != null) {
+          matchedObjects = quadtree!.retrieve(Rect(
+            x: hoveringOffset!.dx - spotlightDiameter / 2,
+            y: hoveringOffset!.dy - spotlightDiameter / 2,
+            height: spotlightDiameter,
+            width: spotlightDiameter,
+          ));
+        }
+
+        setState(() {});
+      })
+      ..forward();
   }
 
-  void insertNode(BuildContext context, TapDownDetails details) {
-    final offset = details.localPosition;
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
-    final quadtree = context.read(quadtreeProvider);
-    final xMax = quadtree.bounds.x + quadtree.bounds.width;
-    final yMax = quadtree.bounds.y + quadtree.bounds.height;
-
-    if (offset.dx > xMax ||
-        offset.dy > yMax ||
-        offset.dx < 0 ||
-        offset.dy < 0) {
-      print('Cannot insert node outside quadtree bounds');
-      return;
-    }
-
+  void _insertRandomNode() {
     final random = Random();
 
     final lower = context.read(lowerNodeDiameterProvider).state;
@@ -116,126 +112,146 @@ class _QuadtreeViewState extends State<QuadtreeView>
       lowerV + random.nextDouble() * (higherV - lowerV),
     );
 
+    var x = random.nextDouble() * 1920;
+    var y = random.nextDouble() * 1080;
+
     context.read(quadtreeProvider.notifier).insert(
-          offset.dx - diameter / 2,
-          offset.dy - diameter / 2,
+          x,
+          y,
           diameter: diameter,
           dx: velocity.x,
           dy: velocity.y,
         );
-    print('Inserted node at (${offset.dx}, ${offset.dy})');
   }
+
+  bool _addedNodes = false;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final size = constraints.biggest;
-        if (size != previousSize) {
-          previousSize = size;
-          WidgetsBinding.instance?.addPostFrameCallback(
-            (_) => context.read(boundsProvider).state = size,
-          );
-        }
+    return Stack(
+      children: [
+        Container(color: Colors.black),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final size = constraints.biggest;
+            if (size != previousSize) {
+              previousSize = size;
+              WidgetsBinding.instance.addPostFrameCallback(
+                (_) => context.read(boundsProvider).state = size,
+              );
+            }
 
-        return Consumer(
-          builder: (context, watch, _) {
-            quadtree = watch(quadtreeProvider);
-            shouldHaveVelocity = watch(shouldHaveVelocityProvider).state;
-            shouldCollide = watch(shouldCollideProvider).state;
-            spotlightDiameter = watch(spotlightDiameterProvider).state;
+            if (!_addedNodes) {
+              _addedNodes = true;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                for (int i = 0; i < 100; i++) {
+                  _insertRandomNode();
+                }
+              });
+            }
 
-            return Container(
-              alignment: Alignment.center,
-              color: Colors.black,
-              child: InteractiveViewer(
-                child: MouseRegion(
-                  onHover: (details) => hoveringOffset = details.localPosition,
-                  onExit: (_) => hoveringOffset = null,
-                  child: GestureDetector(
-                    onTapDown: (details) => insertNode(context, details),
-                    child: Stack(
-                      children: [
-                        if (hoveringOffset != null)
-                          Transform.translate(
-                            offset: hoveringOffset! -
-                                Offset(
-                                  spotlightDiameter / 2,
-                                  spotlightDiameter / 2,
-                                ),
-                            child: Container(
-                              width: spotlightDiameter,
-                              height: spotlightDiameter,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                color: Colors.blue.withOpacity(0.1),
-                              ),
-                            ),
-                          ),
-                        Flow(
-                          delegate: NodeFlowDelegate(nodes),
-                          children: nodes
-                              .map(
-                                (node) => Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.05),
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  width: node.width,
-                                  height: node.height,
-                                ),
-                              )
-                              .toList(),
-                        ),
-                        Flow(
-                          delegate: ObjectFlowDelegate(objects),
-                          children: objects.map(
-                            (object) {
-                              final inQuery = matchedObjects.contains(object);
-                              bool intersectsHitBox = false;
-                              if (hoveringOffset != null && inQuery) {
-                                final offset = hoveringOffset! -
+            return Consumer(
+              builder: (context, watch, _) {
+                quadtree = watch(quadtreeProvider);
+                shouldHaveVelocity = watch(shouldHaveVelocityProvider).state;
+                shouldCollide = watch(shouldCollideProvider).state;
+                spotlightDiameter = watch(spotlightDiameterProvider).state;
+
+                return Container(
+                  alignment: Alignment.center,
+                  color: Colors.black,
+                  child: InteractiveViewer(
+                    child: MouseRegion(
+                      onHover: (details) =>
+                          hoveringOffset = details.localPosition,
+                      onExit: (_) => hoveringOffset = null,
+                      child: GestureDetector(
+                        // onTapDown: (details) => insertNode(context, details),
+                        child: Stack(
+                          children: [
+                            if (hoveringOffset != null)
+                              Transform.translate(
+                                offset: hoveringOffset! -
                                     Offset(
                                       spotlightDiameter / 2,
                                       spotlightDiameter / 2,
-                                    );
-                                intersectsHitBox = Rect(
-                                  x: offset.dx,
-                                  y: offset.dy,
+                                    ),
+                                child: Container(
                                   width: spotlightDiameter,
                                   height: spotlightDiameter,
-                                ).intersects(object);
-                              }
-
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: hoveringOffset == null
-                                      ? Colors.red
-                                      : (intersectsHitBox
-                                          ? Colors.blue
-                                          : inQuery
-                                              ? Colors.purple
-                                              : Colors.red),
-                                  shape: BoxShape.circle,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white),
+                                    color: Colors.blue.withOpacity(0.1),
+                                  ),
                                 ),
-                                width: object.width,
-                                height: object.height,
-                              );
-                            },
-                          ).toList(),
+                              ),
+                            Flow(
+                              delegate: NodeFlowDelegate(nodes),
+                              children: nodes
+                                  .map(
+                                    (node) => Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.05),
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      width: node.width,
+                                      height: node.height,
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                            Flow(
+                              delegate: ObjectFlowDelegate(objects),
+                              children: objects.map(
+                                (object) {
+                                  final inQuery =
+                                      matchedObjects.contains(object);
+                                  bool intersectsHitBox = false;
+                                  if (hoveringOffset != null && inQuery) {
+                                    final offset = hoveringOffset! -
+                                        Offset(
+                                          spotlightDiameter / 2,
+                                          spotlightDiameter / 2,
+                                        );
+                                    intersectsHitBox = Rect(
+                                      x: offset.dx,
+                                      y: offset.dy,
+                                      width: spotlightDiameter,
+                                      height: spotlightDiameter,
+                                    ).intersects(object);
+                                  }
+
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: hoveringOffset == null
+                                          ? Colors.red
+                                          : (intersectsHitBox
+                                              ? Colors.blue
+                                              : inQuery
+                                                  ? Colors.purple
+                                                  : Colors.red),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    width: object.width,
+                                    height: object.height,
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
-        );
-      },
+        ),
+      ],
     );
   }
 }

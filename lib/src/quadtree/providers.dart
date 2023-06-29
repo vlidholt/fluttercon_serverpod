@@ -10,7 +10,7 @@ final lowerNodeDiameterProvider = StateProvider<double>((ref) => 10);
 final higherNodeDiameterProvider = StateProvider<double>((ref) => 20);
 final lowerVelocityProvider = StateProvider<double>((ref) => -30);
 final higherVelocityProvider = StateProvider<double>((ref) => 30);
-final boundsProvider = StateProvider<Size>((ref) => Size(200, 200));
+final boundsProvider = StateProvider<Size>((ref) => const Size(200, 200));
 final maxObjectsProvider = StateProvider<int>((ref) => 3);
 final maxDepthProvider = StateProvider<int>((ref) => 4);
 final spotlightDiameterProvider = StateProvider<double>((ref) => 100);
