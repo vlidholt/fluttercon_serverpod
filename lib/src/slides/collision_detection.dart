@@ -251,7 +251,7 @@ final collisionDetectionSlides = [
     ),
   ),
   Slide(
-    transition: crossfadeTransistion,
+    transition: defaultTransition,
     builder: (context) => ContentSlide(
       title: const Text(_chapterTitle),
       subtitle: const Text('A quick tip'),
