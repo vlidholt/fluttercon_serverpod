@@ -37,6 +37,13 @@ const _codeQuadtreeQuery = '''List<Blob> collidesWithBlob(Body body) {
   return hits;
 }''';
 
+const _codeDistance = '''double distance(Offset p1, Offset p2) {
+  var xDiff = p1.dx - p2.dx;
+  var yDiff = p1.dy - p2.dy;
+
+  return sqrt(xDiff * xDiff + yDiff * yDiff);
+}''';
+
 const _codeDistanceApproximation =
     '''double approximateDistance(Offset p1, Offset p2) {
   var xDiff = (p1.dx - p2.dx).abs();
@@ -46,6 +53,22 @@ const _codeDistanceApproximation =
     return (xDiff + (yDiff / 2)) * 0.95;
   } else {
     return (yDiff + (xDiff / 2)) * 0.95;
+  }
+}''';
+
+const _codeDistanceApproximationFast = '''int approximateDistanceFast(
+  int x1,
+  int y1,
+  int x2,
+  int y2,
+) {
+  var xDiff = (x1 - x2).abs();
+  var yDiff = (y1 - y2).abs();
+
+  if (xDiff > yDiff) {
+    return (xDiff + (yDiff >> 1));
+  } else {
+    return (yDiff + (xDiff >> 1));
   }
 }''';
 
@@ -162,6 +185,31 @@ final collisionDetectionSlides = [
             Expanded(
               flex: 2,
               child: ColoredCode(
+                code: _codeDistance,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: defaultTransition,
+    builder: (context) => const ContentSlide(
+      title: Text(_chapterTitle),
+      subtitle: Text('A quick tip'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: ColoredCode(
                 code: _codeDistanceApproximation,
               ),
             ),
@@ -194,6 +242,34 @@ final collisionDetectionSlides = [
               flex: 1,
               child: SpriteWidget(
                 distanceView,
+                transformMode: SpriteBoxTransformMode.fixedWidth,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: crossfadeTransistion,
+    builder: (context) => ContentSlide(
+      title: const Text(_chapterTitle),
+      subtitle: const Text('A quick tip'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Expanded(
+              flex: 2,
+              child: ColoredCode(
+                code: _codeDistanceApproximationFast,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SpriteWidget(
+                distanceFastView,
                 transformMode: SpriteBoxTransformMode.fixedWidth,
               ),
             ),
@@ -290,10 +366,13 @@ class NaiveCollisionView extends NodeWithSize {
   }
 }
 
-final distanceView = DistanceView();
+final distanceView = DistanceView(false);
+final distanceFastView = DistanceView(true);
 
 class DistanceView extends NodeWithSize {
-  DistanceView() : super(const Size(512, 512));
+  DistanceView(this.fast) : super(const Size(512, 512));
+
+  final bool fast;
 
   @override
   void paint(Canvas canvas) {
@@ -308,7 +387,18 @@ class DistanceView extends NodeWithSize {
       var x = cos(angle);
       var y = sin(angle);
 
-      var approx = approximateDistance(Offset.zero, Offset(x, y));
+      double approx;
+      if (fast) {
+        approx = approximateDistanceFast(
+              0,
+              0,
+              (x * 256).round(),
+              (y * 256).round(),
+            ) /
+            256;
+      } else {
+        approx = approximateDistance(Offset.zero, Offset(x, y));
+      }
 
       if (i == 0) {
         path.moveTo(x * radius * approx + 256, y * radius * approx + 256);
@@ -359,6 +449,13 @@ class DistanceView extends NodeWithSize {
   }
 }
 
+double distance(Offset p1, Offset p2) {
+  var xDiff = p1.dx - p2.dx;
+  var yDiff = p1.dy - p2.dy;
+
+  return sqrt(xDiff * xDiff + yDiff * yDiff);
+}
+
 double approximateDistance(Offset p1, Offset p2) {
   var xDiff = (p1.dx - p2.dx).abs();
   var yDiff = (p1.dy - p2.dy).abs();
@@ -367,5 +464,21 @@ double approximateDistance(Offset p1, Offset p2) {
     return (xDiff + (yDiff / 2)) * 0.95;
   } else {
     return (yDiff + (xDiff / 2)) * 0.95;
+  }
+}
+
+int approximateDistanceFast(
+  int x1,
+  int y1,
+  int x2,
+  int y2,
+) {
+  var xDiff = (x1 - x2).abs();
+  var yDiff = (y1 - y2).abs();
+
+  if (xDiff > yDiff) {
+    return (xDiff + (yDiff >> 1));
+  } else {
+    return (yDiff + (xDiff >> 1));
   }
 }
