@@ -39,13 +39,13 @@ const _codeQuadtreeQuery = '''List<Blob> collidesWithBlob(Body body) {
 
 const _codeDistanceApproximation =
     '''double approximateDistance(Offset p1, Offset p2) {
-  var xDiff = (p1.x - p2.x).abs();
-  var yDiff = (p1.y - p2.y).abs();
+  var xDiff = (p1.dx - p2.dx).abs();
+  var yDiff = (p1.dy - p2.dy).abs();
 
   if (xDiff > yDiff) {
-    return xDiff + (yDiff / 2);
+    return (xDiff + (yDiff / 2)) * 0.95;
   } else {
-    return yDiff + (xDiff / 2);
+    return (yDiff + (xDiff / 2)) * 0.95;
   }
 }''';
 
@@ -301,6 +301,7 @@ class DistanceView extends NodeWithSize {
     const radius = 200.0;
 
     var path = Path();
+    var circlePath = Path();
 
     for (var i = 0; i < 360; i++) {
       var angle = i * 2 * pi / 360;
@@ -311,31 +312,22 @@ class DistanceView extends NodeWithSize {
 
       if (i == 0) {
         path.moveTo(x * radius * approx + 256, y * radius * approx + 256);
+        circlePath.moveTo(x * radius + 256, y * radius + 256);
       } else {
         path.lineTo(x * radius * approx + 256, y * radius * approx + 256);
+        circlePath.lineTo(x * radius + 256, y * radius + 256);
       }
     }
 
     path.close();
+    circlePath.close();
 
-    canvas.drawPath(
-      path,
-      Paint()..color = Colors.red,
-    );
+    var diffPath = Path.combine(PathOperation.xor, path, circlePath);
 
     canvas.drawCircle(
       const Offset(256, 256),
       radius,
       Paint()..color = Colors.grey.shade900,
-    );
-
-    canvas.drawCircle(
-      const Offset(256, 256),
-      radius,
-      Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2,
     );
 
     canvas.drawLine(
@@ -353,6 +345,17 @@ class DistanceView extends NodeWithSize {
         ..color = Colors.white
         ..strokeWidth = 2,
     );
+
+    canvas.drawPath(diffPath, Paint()..color = Colors.red);
+
+    canvas.drawCircle(
+      const Offset(256, 256),
+      radius,
+      Paint()
+        ..color = Colors.white
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2,
+    );
   }
 }
 
@@ -361,8 +364,8 @@ double approximateDistance(Offset p1, Offset p2) {
   var yDiff = (p1.dy - p2.dy).abs();
 
   if (xDiff > yDiff) {
-    return xDiff + (yDiff / 2);
+    return (xDiff + (yDiff / 2)) * 0.95;
   } else {
-    return yDiff + (xDiff / 2);
+    return (yDiff + (xDiff / 2)) * 0.95;
   }
 }
