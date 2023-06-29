@@ -35,8 +35,19 @@ const _codeQuadtreeQuery = '''List<Blob> collidesWithBlob(Body body) {
     }
   }
   return hits;
-}
-''';
+}''';
+
+const _codeDistanceApproximation =
+    '''double approximateDistance(Offset p1, Offset p2) {
+  var xDiff = (p1.x - p2.x).abs();
+  var yDiff = (p1.y - p2.y).abs();
+
+  if (xDiff > yDiff) {
+    return xDiff + (yDiff / 2);
+  } else {
+    return yDiff + (xDiff / 2);
+  }
+}''';
 
 final collisionDetectionSlides = [
   Slide(
@@ -138,6 +149,59 @@ final collisionDetectionSlides = [
       ),
     ),
   ),
+  Slide(
+    transition: defaultTransition,
+    builder: (context) => const ContentSlide(
+      title: Text(_chapterTitle),
+      subtitle: Text('A quick tip'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: ColoredCode(
+                code: _codeDistanceApproximation,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: crossfadeTransistion,
+    builder: (context) => ContentSlide(
+      title: const Text(_chapterTitle),
+      subtitle: const Text('A quick tip'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Expanded(
+              flex: 2,
+              child: ColoredCode(
+                code: _codeDistanceApproximation,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SpriteWidget(
+                distanceView,
+                transformMode: SpriteBoxTransformMode.fixedWidth,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
 ];
 
 final naiveCollisionView10 = NaiveCollisionView(10);
@@ -223,5 +287,82 @@ class NaiveCollisionView extends NodeWithSize {
         circlePaint,
       );
     }
+  }
+}
+
+final distanceView = DistanceView();
+
+class DistanceView extends NodeWithSize {
+  DistanceView() : super(const Size(512, 512));
+
+  @override
+  void paint(Canvas canvas) {
+    super.paint(canvas);
+    const radius = 200.0;
+
+    var path = Path();
+
+    for (var i = 0; i < 360; i++) {
+      var angle = i * 2 * pi / 360;
+      var x = cos(angle);
+      var y = sin(angle);
+
+      var approx = approximateDistance(Offset.zero, Offset(x, y));
+
+      if (i == 0) {
+        path.moveTo(x * radius * approx + 256, y * radius * approx + 256);
+      } else {
+        path.lineTo(x * radius * approx + 256, y * radius * approx + 256);
+      }
+    }
+
+    path.close();
+
+    canvas.drawPath(
+      path,
+      Paint()..color = Colors.red,
+    );
+
+    canvas.drawCircle(
+      const Offset(256, 256),
+      radius,
+      Paint()..color = Colors.grey.shade900,
+    );
+
+    canvas.drawCircle(
+      const Offset(256, 256),
+      radius,
+      Paint()
+        ..color = Colors.white
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2,
+    );
+
+    canvas.drawLine(
+      const Offset(256, 0),
+      const Offset(256, 512),
+      Paint()
+        ..color = Colors.white
+        ..strokeWidth = 2,
+    );
+
+    canvas.drawLine(
+      const Offset(0, 256),
+      const Offset(512, 256),
+      Paint()
+        ..color = Colors.white
+        ..strokeWidth = 2,
+    );
+  }
+}
+
+double approximateDistance(Offset p1, Offset p2) {
+  var xDiff = (p1.dx - p2.dx).abs();
+  var yDiff = (p1.dy - p2.dy).abs();
+
+  if (xDiff > yDiff) {
+    return xDiff + (yDiff / 2);
+  } else {
+    return yDiff + (xDiff / 2);
   }
 }
