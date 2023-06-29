@@ -33,6 +33,7 @@ dependencies:
 
   dotted_line: ^3.0.0
   flutter_svg: ^2.0.7
+  spritewidget: ^2.0.1
   slick_slides:
     path: packages/slick_slides
   quadtree_dart: ^1.1.1
