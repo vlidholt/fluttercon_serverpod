@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttercon_serverpod/src/slides/building_the_game.dart';
+import 'package:fluttercon_serverpod/src/slides/collision_detection.dart';
 import 'package:fluttercon_serverpod/src/slides/intro.dart';
 import 'package:fluttercon_serverpod/src/slides/realtime_communications.dart';
 import 'package:fluttercon_serverpod/src/slides/serverpod_basics.dart';
@@ -40,8 +42,10 @@ class MyHomePage extends StatelessWidget {
     return SlideDeck(
       slides: [
         // ...introSlides,
-        // ...serverpodBasicsSlides,
-        ...realtimeCommunicationsSlides,
+        ...serverpodBasicsSlides,
+        // ...realtimeCommunicationsSlides,
+        // ...buildingTheGameSlides,
+        // ...collisionDetectionSlides,
       ],
     );
   }
