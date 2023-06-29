@@ -9,35 +9,34 @@ import 'package:spritewidget/spritewidget.dart';
 
 const _chapterTitle = 'Collision detection';
 
-const _codePeopleEndpointExample = '''class PeopleEndpoint {
-  Future<List<Person>> getPerson(Session session, String lastName) async {
-    return Person.find(
-      where: (t) => t.lastName.equals(lastName),
-    );
-  }
+const _codeQuadtree = '''class CollisionHandler {
+  final List<Blob> blobs;
 
-  Future<void> addPerson(Session session, Person person) async {
-    await Person.insert(session, person);
+  late final Quadtree _blobsQuadtree;
+
+  CollisionHandler({
+    required this.blobs,
+  }) {
+    _blobsQuadTree = Quadtree(
+      Rect(x: 0, y: 0, width: gameWidth, height: gameHeight),
+    );
+    for (var blob in blobs) {
+      _blobsQuadtree.insert(BlobRect(blob));
+    }
   }
 }''';
 
-const _codePeopleEndpointWithClientExample = '''class PeopleEndpoint {
-  Future<List<Person>> getPerson(Session session, String lastName) async {
-    return Person.find(
-      where: (t) => t.lastName.equals(lastName),
-    );
+const _codeQuadtreeQuery = '''List<Blob> collidesWithBlob(Body body) {
+  var potentialHits = _blobsQuadtree.retrieve(body.bounds);
+  var hits = <Blob>[];
+  for (var potentialHit in potentialHits) {
+    if (potentialHit.blob.body.collidesWith(body)) {
+      hits.add(potentialHit.blob);
+    }
   }
-
-  Future<void> addPerson(Session session, Person person) async {
-    await Person.insert(session, person);
-  }
+  return hits;
 }
-
-// Client code for getting a person.
-var person = await client.people.getPerson('Doe');
-
-// Client code for adding a person.
-await client.people.addPerson(person);''';
+''';
 
 final collisionDetectionSlides = [
   Slide(
@@ -100,17 +99,41 @@ final collisionDetectionSlides = [
     },
   ),
   Slide(
-    transition: crossfadeTransistion,
+    transition: defaultTransition,
     builder: (context) => const ContentSlide(
       title: Text(_chapterTitle),
-      subtitle: Text('Serializing objects'),
+      subtitle: Text('Quadtree'),
       content: Align(
         alignment: Alignment.topLeft,
         child: ColoredCode(
-          code: _codePeopleEndpointWithClientExample,
-          animateFromCode: _codePeopleEndpointExample,
-          highlightedLines: [12, 13, 14, 15, 16, 17],
-          maxAnimationDuration: Duration(seconds: 1),
+          code: _codeQuadtree,
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: crossfadeTransistion,
+    builder: (context) => const ContentSlide(
+      title: Text(_chapterTitle),
+      subtitle: Text('Quadtree'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: ColoredCode(
+          code: _codeQuadtree,
+          highlightedLines: [8, 9, 10, 11, 12, 13],
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: defaultTransition,
+    builder: (context) => const ContentSlide(
+      title: Text(_chapterTitle),
+      subtitle: Text('Quadtree'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: ColoredCode(
+          code: _codeQuadtreeQuery,
         ),
       ),
     ),
