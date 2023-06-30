@@ -42,12 +42,12 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SlideDeck(
       slides: [
-        ...piecingItTogetherSlides,
         ...introSlides,
         ...serverpodBasicsSlides,
         ...realtimeCommunicationsSlides,
         ...buildingTheGameSlides,
         ...collisionDetectionSlides,
+        ...piecingItTogetherSlides,
       ],
     );
   }
