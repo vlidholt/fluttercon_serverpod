@@ -11,6 +11,10 @@ const _codeGameBoardEndpoint = '''class GameEndpoint extends Endpoint {
     Timer.periodic(GameStateExtension.tickDuration, (timer) {
       for (game in games) {
         game.tick();
+
+        var session = await serverpod.createSession();
+        session.messages.postMessage(game.channel, game);
+        await session.close();
       }
     });
   }
@@ -58,6 +62,21 @@ const _codeGameBoardStreamClosed =
   userObject.game.removePlayer(userObject.player);
 }''';
 
+const _codeOptimizeCommunication = '''# game_state.yaml
+class: GameState
+fields:
+  gameId: int
+  food: List<Food>
+  players: List<Player>''';
+
+const _codeOptimizeCommunicationUpdates = '''# game_state_update.yaml
+class: GameStateUpdate
+fields:
+  gameId: int
+  addedFood: List<Food>
+  removedFood: List<int>
+  players: List<Player>''';
+
 final piecingItTogetherSlides = [
   Slide(
     transition: defaultTransition,
@@ -76,6 +95,48 @@ final piecingItTogetherSlides = [
         alignment: Alignment.topLeft,
         child: ColoredCode(
           code: _codeGameBoardEndpoint,
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: crossfadeTransistion,
+    builder: (context) => const ContentSlide(
+      title: Text(_chapterTitle),
+      subtitle: Text('Creating a game endpoint'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: ColoredCode(
+          code: _codeGameBoardEndpoint,
+          highlightedLines: [4, 11],
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: crossfadeTransistion,
+    builder: (context) => const ContentSlide(
+      title: Text(_chapterTitle),
+      subtitle: Text('Creating a game endpoint'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: ColoredCode(
+          code: _codeGameBoardEndpoint,
+          highlightedLines: [6],
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: crossfadeTransistion,
+    builder: (context) => const ContentSlide(
+      title: Text(_chapterTitle),
+      subtitle: Text('Creating a game endpoint'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: ColoredCode(
+          code: _codeGameBoardEndpoint,
+          highlightedLines: [8, 9, 10],
         ),
       ),
     ),
@@ -171,6 +232,33 @@ final piecingItTogetherSlides = [
         alignment: Alignment.topLeft,
         child: ColoredCode(
           code: _codeGameBoardStreamClosed,
+        ),
+      ),
+    ),
+  ),
+  Slide(
+    transition: defaultTransition,
+    builder: (context) => const ContentSlide(
+      title: Text(_chapterTitle),
+      subtitle: Text('Optimizing communication'),
+      content: Align(
+        alignment: Alignment.topLeft,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ColoredCode(
+                code: _codeOptimizeCommunication,
+                language: 'yaml',
+              ),
+            ),
+            Expanded(
+              child: ColoredCode(
+                code: _codeOptimizeCommunicationUpdates,
+                language: 'yaml',
+              ),
+            ),
+          ],
         ),
       ),
     ),
