@@ -1,11 +1,24 @@
+import 'package:bacterialboom_flutter/bacterialboom.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercon_serverpod/src/slides/shared.dart';
+import 'package:fluttercon_serverpod/src/themes/alt_dark_theme.dart';
+import 'package:fluttercon_serverpod/src/widgets/intro_blobs.dart';
 import 'package:slick_slides/slick_slides.dart';
+
+final _keyBackground = GlobalKey();
 
 final introSlides = [
   Slide(
-    builder: (context) => const TitleSlide(
-      title: Text(
+    theme: slideThemeDarkAlt,
+    builder: (context) => TitleSlide(
+      background: Stack(
+        key: _keyBackground,
+        children: const [
+          ScrollingBackground(),
+          IntroBlobsView(),
+        ],
+      ),
+      title: const Text(
         'Building a multi-player game with Flutter & Serverpod',
       ),
     ),
