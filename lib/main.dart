@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttercon_serverpod/src/slides/building_the_client.dart';
 import 'package:fluttercon_serverpod/src/slides/building_the_game.dart';
 import 'package:fluttercon_serverpod/src/slides/collision_detection.dart';
+import 'package:fluttercon_serverpod/src/slides/conclusion.dart';
 import 'package:fluttercon_serverpod/src/slides/intro.dart';
 import 'package:fluttercon_serverpod/src/slides/piecing_it_together.dart';
 import 'package:fluttercon_serverpod/src/slides/realtime_communications.dart';
@@ -55,6 +56,7 @@ class MyHomePage extends StatelessWidget {
         ...collisionDetectionSlides,
         ...piecingItTogetherSlides,
         ...buildingTheClientSlides,
+        ...conclusionSlides,
       ],
     );
   }
