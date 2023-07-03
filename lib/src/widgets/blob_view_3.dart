@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:bacterialboom_flutter/bacterialboom.dart';
 import 'package:flutter/material.dart';
 import 'package:spritewidget/spritewidget.dart';
 
@@ -28,7 +25,6 @@ class _BlobView3State extends State<BlobView3> {
     super.didUpdateWidget(oldWidget);
     _blobViewNode._radius = widget.radius;
     _blobViewNode._offset = widget.offset;
-    _blobViewNode._amplitude = widget.amplitude;
   }
 
   @override
@@ -40,7 +36,6 @@ class _BlobView3State extends State<BlobView3> {
 class _BlobViewNode extends NodeWithSize {
   double _radius = 5.0;
   double _offset = 256.0;
-  double _amplitude = 0.0;
 
   _BlobViewNode() : super(const Size(512, 512));
 
