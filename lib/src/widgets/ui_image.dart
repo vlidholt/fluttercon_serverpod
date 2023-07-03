@@ -33,7 +33,6 @@ class _UiImagePainter extends CustomPainter {
 
   @override
   void paint(ui.Canvas canvas, ui.Size size) async {
-    print('painting size: $size');
     var srcRect = Rect.fromLTWH(
       0,
       0,
