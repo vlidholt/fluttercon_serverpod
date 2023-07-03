@@ -3,18 +3,20 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:slick_slides/slick_slides.dart';
 
-const _defaultBulletSpacing = 0.3;
+const _defaultBulletSpacing = 0.8;
 
 class Bullets extends StatelessWidget {
   factory Bullets({
     required List<String> bullets,
     double bulletSpacing = _defaultBulletSpacing,
+    EdgeInsets? padding,
     Key? key,
   }) {
     var richBullets = bullets.map((e) => TextSpan(text: e)).toList();
     return Bullets.rich(
       bullets: richBullets,
       bulletSpacing: bulletSpacing,
+      padding: const EdgeInsets.symmetric(vertical: 50),
       key: key,
     );
   }
@@ -22,11 +24,13 @@ class Bullets extends StatelessWidget {
   const Bullets.rich({
     required this.bullets,
     this.bulletSpacing = _defaultBulletSpacing,
+    this.padding = const EdgeInsets.symmetric(vertical: 50),
     super.key,
   });
 
   final List<TextSpan> bullets;
   final double bulletSpacing;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +60,12 @@ class Bullets extends StatelessWidget {
       children: joinedBulletsList,
     );
 
-    return DefaultTextStyle(
-      style: theme.textTheme.body,
-      child: AutoSizeText.rich(joinedBullets),
+    return Padding(
+      padding: padding,
+      child: DefaultTextStyle(
+        style: theme.textTheme.body,
+        child: AutoSizeText.rich(joinedBullets),
+      ),
     );
   }
 }

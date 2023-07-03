@@ -1,4 +1,6 @@
+import 'package:bacterialboom_flutter/main.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercon_serverpod/src/slides/building_the_client.dart';
 import 'package:fluttercon_serverpod/src/slides/building_the_game.dart';
 import 'package:fluttercon_serverpod/src/slides/collision_detection.dart';
 import 'package:fluttercon_serverpod/src/slides/intro.dart';
@@ -8,6 +10,10 @@ import 'package:fluttercon_serverpod/src/slides/serverpod_basics.dart';
 import 'package:slick_slides/slick_slides.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await resourceManager.load();
+
   await SlickSlides().initialize();
   runApp(const MyApp());
 }
@@ -42,6 +48,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SlideDeck(
       slides: [
+        ...buildingTheClientSlides,
         ...introSlides,
         ...serverpodBasicsSlides,
         ...realtimeCommunicationsSlides,
