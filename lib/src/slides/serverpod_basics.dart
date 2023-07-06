@@ -237,6 +237,30 @@ final serverpodBasicsSlides = [
   ),
   Slide(
     transition: defaultTransition,
+    builder: (context) {
+      return Stack(
+        children: [
+          SizedBox(child: SlideTheme.of(context)!.backgroundBuilder(context)),
+          Positioned.fill(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: FittedBox(
+                child: Image.asset('assets/serverpod-screenshot.webp'),
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+    onPrecache: (context) {
+      precacheImage(
+        const AssetImage('assets/serverpod-screenshot.webp'),
+        context,
+      );
+    },
+  ),
+  Slide(
+    transition: defaultTransition,
     builder: (context) => const ContentSlide(
       title: Text(_serverpodTitle),
       subtitle: Text('Calling server methods'),
@@ -333,12 +357,12 @@ final serverpodBasicsSlides = [
     transition: defaultTransition,
     builder: (context) => const ContentSlide(
       title: Text(_serverpodTitle),
-      subtitle: Text('Serializing objects'),
+      subtitle: Text('Communicating with the database'),
       content: Align(
         alignment: Alignment.topLeft,
         child: ColoredCode(
           code: _codePeopleEndpointExample,
-          highlightedLines: [1, 2, 3, 4],
+          highlightedLines: [1, 2, 3, 4, 5],
           animateHighlightedLines: true,
         ),
       ),
@@ -348,7 +372,7 @@ final serverpodBasicsSlides = [
     transition: crossfadeTransistion,
     builder: (context) => const ContentSlide(
       title: Text(_serverpodTitle),
-      subtitle: Text('Serializing objects'),
+      subtitle: Text('Communicating with the database'),
       content: Align(
         alignment: Alignment.topLeft,
         child: ColoredCode(
@@ -362,7 +386,7 @@ final serverpodBasicsSlides = [
     transition: crossfadeTransistion,
     builder: (context) => const ContentSlide(
       title: Text(_serverpodTitle),
-      subtitle: Text('Serializing objects'),
+      subtitle: Text('Communicating with the database'),
       content: Align(
         alignment: Alignment.topLeft,
         child: ColoredCode(
